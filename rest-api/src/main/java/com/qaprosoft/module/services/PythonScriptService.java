@@ -2,6 +2,7 @@ package com.qaprosoft.module.services;
 
 import org.apache.log4j.Logger;
 import java.io.*;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -24,7 +25,9 @@ public class PythonScriptService {
 
 
     public static InputStream callPythonScript(String pathToScript,String model, String url){
-        String[] cmd = {"python", pathToScript, "--model"+ model,"--url" + url};
+        String[] cmd = {"python ", pathToScript, " --model "+ model," --url " + url};
+        System.out.println("cmd: "+ Arrays.toString(cmd));
+
         Process p = null;
         try {
             p = Runtime.getRuntime().exec(cmd);

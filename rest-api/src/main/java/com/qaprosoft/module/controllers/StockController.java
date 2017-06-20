@@ -34,11 +34,11 @@ public class StockController
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
-
+		System.out.println(response);
 		JSONObject jsonObject = new JSONObject(response);
 		result.setInput_image((String) jsonObject.get("input_image"));
 		result.setOutput_image((String) jsonObject.get("output_image"));
-		result.setMetadata((String) jsonObject.get("metadata"));
+		result.setMetadata((String) jsonObject.get("output_metadata"));
 
 		return result;
 	}
