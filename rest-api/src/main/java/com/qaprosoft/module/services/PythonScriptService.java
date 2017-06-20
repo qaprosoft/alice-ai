@@ -25,7 +25,7 @@ public class PythonScriptService {
 
 
     public static InputStream callPythonScript(String pathToScript,String model, String url){
-        String[] cmd = {"python ", pathToScript, " --model "+ model," --url " + url};
+        String[] cmd = {"/usr/bin/python ", pathToScript, " --model "+ model," --url " + url};
         System.out.println("cmd: "+ Arrays.toString(cmd));
 
         Process p = null;
