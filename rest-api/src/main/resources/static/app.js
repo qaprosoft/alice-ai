@@ -1,10 +1,13 @@
+var host = "54.245.105.12:8080";
+//var host = "localhost:8080";
+
 function getOrders() {
 	var data = '{' +
     	'"url":"' + $("#url").val() + '"' +
     	', "model":"' + $("#model").val() + '"' +
     	'}';
     	$.ajax({
-    		url: 'http://localhost:8080/request',
+    		url: 'http://'+host+'/request',
     	    type : "POST",
     	    dataType : 'text',
     	    contentType : 'application/json',

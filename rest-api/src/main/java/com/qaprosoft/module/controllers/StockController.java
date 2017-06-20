@@ -34,7 +34,7 @@ public class StockController
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
-		response = response.substring(response.indexOf("{"),response.length()-1);
+
 		JSONObject jsonObject = new JSONObject(response);
 		result.setInput_image((String) jsonObject.get("input_image"));
 		result.setOutput_image((String) jsonObject.get("output_image"));
