@@ -1,5 +1,5 @@
-var host = "54.245.105.12:8080";
-//var host = "localhost:8080";
+//var host = "54.245.105.12:8080";
+var host = "localhost:8080";
 
 function getOrders() {
 	var data = '{' +
@@ -14,25 +14,16 @@ function getOrders() {
     	    data : data,
 	    success: function(response) {
 
-       displayInfo(response);
+     var curtain = document.getElementById("curtain");
+           curtain.style.display = 'block';
+           curtain.innerHTML= "<h1>All is ok! </h1>" ;
 
 	    },
 	     error: function(response) {
-        alert("Can't get data!");
+        var curtain = document.getElementById("curtain");
+                   curtain.style.display = 'block';
+                   curtain.innerHTML= "<h1>Can't get data! </h1>" ;
             }
 	})
 }
 
-function displayInfo(response) {
-var obj =JSON.parse(response);
-
-       var curtain1 = document.getElementById("curtain1");
-       curtain1.style.display = 'block';
-       curtain1.innerHTML= "<a href='"+obj.input_image+"'>Input image</a>" ;
-       var curtain2 = document.getElementById("curtain2");
-       curtain2.style.display = 'block';
-       curtain2.innerHTML= "<a href='"+obj.output_image+"'>Output image</a>";
-       var curtain3 = document.getElementById("curtain3");
-       curtain3.style.display = 'block';
-       curtain3.innerHTML= "<a href='"+obj.metadata+"'>Metadata</a>";
-}

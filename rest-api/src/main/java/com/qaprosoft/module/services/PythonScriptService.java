@@ -19,14 +19,14 @@ public class PythonScriptService {
         String aiHome = properties.getProperty("AI_HOME");
         String recognizeScript = properties.getProperty("RECOGNIZE_SCRIPT");
         InputStream in = callPythonScript(aiHome + "/" +recognizeScript,model, url);
-        String str = getStringFromInputstream(in);
+        String str = StreamService.getStringFromInputStream(in);
         return str;
     }
 
 
     public static InputStream callPythonScript(String pathToScript,String model, String url){
         String[] cmd = {"/usr/bin/python", pathToScript, "--model", model,"--url", url};
-        System.out.println("cmd: "+ Arrays.toString(cmd));
+
 
         Process p = null;
         try {
@@ -43,19 +43,5 @@ public class PythonScriptService {
         return p.getInputStream();
     }
 
-
-    public static String getStringFromInputstream(InputStream in){
-        String str = "";
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-        try {
-            while (br.ready())
-                str+=br.readLine()+"\n";
-        } catch (IOException e) {
-            LOGGER.info(e);
-        }
-
-        return str;
-    }
 
 }
