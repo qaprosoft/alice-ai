@@ -105,40 +105,29 @@ public class StreamService extends BasicService{
     }
 
 
-    public static  String saveImage(MultipartFile file){
-        File file1 = new File(PATH_TO_IMG_FILE);
-        FileOutputStream fos = null;
+    public static  String saveImage(MultipartFile file1){
+        File file = new File(PATH_TO_IMG_FILE);
+        FileOutputStream fos =null;
         try {
-            fos = new FileOutputStream(file1);
+            fos = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
-            LOGGER.info(e);
+            e.printStackTrace();
         }
-        InputStream in = null;
+
+        InputStream inputStream =null;
         try {
-            in = new BufferedInputStream(file.getInputStream());
+         inputStream = file1.getInputStream();
         } catch (IOException e) {
-            LOGGER.info(e);
-        }
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        byte[] buf = new byte[1024];
-        int n ;
-        try {
-            while (-1!=(n=in.read(buf)))
-            {
-                fos.write(buf, 0, n);
-            }
-        } catch (IOException e) {
-            LOGGER.info(e);
+            e.printStackTrace();
         }
 
         try {
-            fos.close();
-            out.close();
-            in.close();
-        } catch (IOException e) {
-            LOGGER.info(e);
-        }
+            while (inputStream.available()>0) fos.write(inputStream.read());
 
+            return PATH_TO_IMG_FILE;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return PATH_TO_IMG_FILE;
     }
 
