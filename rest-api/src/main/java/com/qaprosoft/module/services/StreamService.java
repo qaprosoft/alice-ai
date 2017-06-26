@@ -107,6 +107,10 @@ public class StreamService extends BasicService{
 
     public static  String saveImage(MultipartFile file1){
         File file = new File(PATH_TO_IMG_FILE);
+
+        System.out.println(file1.getOriginalFilename());
+        System.out.println(file1.getSize());
+
         FileOutputStream fos =null;
         try {
             fos = new FileOutputStream(file);
