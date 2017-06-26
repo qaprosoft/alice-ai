@@ -62,6 +62,7 @@ public class UrlController
 	public @ResponseBody String singleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
 											  RedirectAttributes redirectAttributes) throws IOException {
 		String url = StreamService.saveImage(file);
+
 		String responseScript = null;
 		try {
 			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);

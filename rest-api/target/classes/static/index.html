@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+        <title>Recognition module</title>
+    </head>
+    <body>
+
+<div align="center">
+    <form method="POST" action="/download" enctype="multipart/form-data" id="fileUploadForm">
+        <h2>File to upload: <input type="file" name="file"></h2>
+        <h2>Model: <input type="text" name="name"></h2>
+        <h2><input type="button"  value="Proccess"  onclick="downloadFile();"> Press here to upload the file!</h2>
+    </form>
+</div>
+<div id="curtain" align="center" style="display: none;"></div></br>
+
+
+    <!--<br>-->
+        <!---->
+        <!--<div style="width: 100%;" align="center">&nbsp;-->
+            <!--<h1><br><label>url:</label>-->
+                <!--<input type="text"  id="url" name="url" /></br>-->
+                <!--<label>model:</label>-->
+                <!--<input type="text"  id="model" name="model" value="default" />-->
+            <!--</h1>-->
+        <!--</div>-->
+        <!--<div align="center"><button  id="OBHistory" onclick="getOrders();">Process</button></div>-->
+        <!--<div id="curtain" align="center" style="display: none;"></div></br>-->
+
+
+        <script src="jquery.js"></script>
+        <script src="app.js"></script>
+    </body>
+</html>
