@@ -8,17 +8,27 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import java.io.IOException;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.*;
 
 
 @Controller
 @CrossOrigin
 public class UrlController
 {
+
 	private static final Logger LOGGER = Logger.getLogger(UrlController.class);
+
+
+	@RequestMapping("/")
+	public String index() {
+		return "index.html";
+	}
 
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/request", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -27,6 +37,8 @@ public class UrlController
 		String url = request.getUrl();
 		String model = request.getModel();
 		String responseScript = null;
+
+		StreamService.saveFileOnLocalDisk(url);
 
 		try {
 			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);
@@ -38,8 +50,36 @@ public class UrlController
 		String metadata = (String) jsonObject.get("output_metadata");
 		String response = StreamService.getStringFromURL(metadata);
 
+		//StreamService.deleteFile();
+
+
 		return response;
 	}
+
+
+	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(value = "/download", method = RequestMethod.POST,produces = MediaType.TEXT_HTML_VALUE)
+	public @ResponseBody String singleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
+											  RedirectAttributes redirectAttributes) throws IOException {
+		String url = StreamService.saveImage(file);
+		String responseScript = null;
+		try {
+			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);
+		} catch (IOException e) {
+			LOGGER.info("Can't get response!");
+		}
+
+
+		JSONObject jsonObject = new JSONObject(responseScript);
+		String metadata = (String) jsonObject.get("output_metadata");
+		String response = StreamService.getStringFromURL(metadata);
+
+		//StreamService.deleteFile();
+		return response;
+	}
+
+
+
 
 
 
