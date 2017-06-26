@@ -64,13 +64,15 @@ public class UrlController
 		String url = StreamService.saveImage(file);
 
 		String responseScript = null;
+		System.out.println(responseScript+"c1");
 		try {
 			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);
+			System.out.println(responseScript+"c1");
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
 
-		System.out.println(responseScript);
+
 
 		JSONObject jsonObject = new JSONObject(responseScript);
 		String metadata = (String) jsonObject.get("output_metadata");
