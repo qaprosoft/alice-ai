@@ -31,57 +31,55 @@ public class UrlController
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/request", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/request", method = RequestMethod.POST, produces = MediaType.APPLICATION_XML_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String getJson(@RequestBody @Valid URLRequest request)
 	{
 		String url = request.getUrl();
 		String model = request.getModel();
 		String responseScript = null;
 
-		//StreamService.saveFileOnLocalDisk(url);
+		StreamService.saveFileOnLocalDisk(url);
 
 		try {
 			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
-
 
 		System.out.println(responseScript);
 
 		JSONObject jsonObject = new JSONObject(responseScript);
 		String metadata = (String) jsonObject.get("output_metadata");
+		System.out.println(metadata);
 		String response = StreamService.getStringFromURL(metadata);
 
 		//StreamService.deleteFile();
 
 
+		System.out.println(response);
 		return response;
 	}
 
 
 	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/download", method = RequestMethod.POST,produces = MediaType.TEXT_HTML_VALUE)
+	@RequestMapping(value = "/download", method = RequestMethod.POST,produces = MediaType.TEXT_XML_VALUE)
 	public @ResponseBody String singleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
 											  RedirectAttributes redirectAttributes) throws IOException {
 		String url = StreamService.saveImage(file);
 
 		String responseScript = null;
-		System.out.println(responseScript+"c1");
+
 		try {
 			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);
-			System.out.println(responseScript+"c1");
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
 
 
-
 		JSONObject jsonObject = new JSONObject(responseScript);
 		String metadata = (String) jsonObject.get("output_metadata");
 		String response = StreamService.getStringFromURL(metadata);
-
-		//StreamService.deleteFile();
+		StreamService.deleteFile();
 		return response;
 	}
 
