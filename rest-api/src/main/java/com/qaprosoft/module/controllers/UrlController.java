@@ -68,16 +68,11 @@ public class UrlController
 		System.out.println(responseScript);
 		try {
 			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);
-
-
-			System.out.println("_____________");
-			System.out.println(responseScript );
-			System.out.println("_____________");
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
 
-
+		System.out.println(responseScript);
 
 		JSONObject jsonObject = new JSONObject(responseScript);
 		String metadata = (String) jsonObject.get("output_metadata");
