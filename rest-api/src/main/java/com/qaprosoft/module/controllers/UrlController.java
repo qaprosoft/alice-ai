@@ -70,11 +70,12 @@ public class UrlController
 		String responseScript = "sfsf";
 		try {
 			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);
+			System.out.println(responseScript + " response script");
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
 
-		System.out.println(responseScript + " response script");
+
 
 		JSONObject jsonObject = new JSONObject(responseScript);
 		String metadata = (String) jsonObject.get("output_metadata");
