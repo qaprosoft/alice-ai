@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -67,9 +66,7 @@ public class UrlController
 											  RedirectAttributes redirectAttributes) throws IOException {
 		String url = StreamService.saveImage(file);
 
-		System.out.println(url);
-
-		String responseScript = null;
+		String responseScript = "sfsf";
 
 		try {
 			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);

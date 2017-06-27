@@ -45,7 +45,11 @@ public class StreamService extends BasicService{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(str);
+        try {
+            in.close();
+        } catch (IOException e) {
+            LOGGER.info(e);
+        }
         return str;
     }
 
