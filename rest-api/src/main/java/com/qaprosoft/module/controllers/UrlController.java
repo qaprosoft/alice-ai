@@ -68,7 +68,6 @@ public class UrlController
 		String url = StreamService.saveImage(file);
 
 		String responseScript = null;
-		System.out.println(model);
 
 		try {
 			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);

@@ -26,7 +26,7 @@ public class BasicService {
 
         AI_HOME= properties.getProperty("AI_HOME");
         RECOGNIZE_SCRIPT = properties.getProperty("RECOGNIZE_SCRIPT");
-        PATH_TO_IMG_FILE=properties.getProperty("PATH_INPUT_IMAGE")+properties.getProperty("INPUT_IMAGE_FILENAME");
+        PATH_TO_IMG_FILE=properties.getProperty("AI_HOME")+"/"+properties.getProperty("INPUT_IMAGE_FILENAME");
     }
 
 }
