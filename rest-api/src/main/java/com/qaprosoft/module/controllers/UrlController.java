@@ -38,7 +38,7 @@ public class UrlController
 		String model = request.getModel();
 		String responseScript = null;
 
-		StreamService.saveFileOnLocalDisk(url);
+		//StreamService.saveFileOnLocalDisk(url);
 
 		try {
 			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);
