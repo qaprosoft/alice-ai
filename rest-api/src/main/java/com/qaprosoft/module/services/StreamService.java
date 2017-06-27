@@ -118,6 +118,7 @@ public class StreamService extends BasicService{
         InputStream inputStream =null;
         try {
          inputStream = file1.getInputStream();
+            System.out.println(inputStream.available());
         } catch (IOException e) {
             e.printStackTrace();
         }
