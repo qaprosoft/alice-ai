@@ -4,6 +4,7 @@ import javax.validation.Valid;
 import com.qaprosoft.module.controllers.models.URLRequest;
 import com.qaprosoft.module.services.PythonScriptService;
 import com.qaprosoft.module.services.StreamService;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -67,7 +68,6 @@ public class UrlController
 		String url = StreamService.saveImage(file);
 
 		String responseScript = "sfsf";
-
 		try {
 			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);
 		} catch (IOException e) {
