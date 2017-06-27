@@ -67,6 +67,8 @@ public class UrlController
 											  RedirectAttributes redirectAttributes) throws IOException {
 		String url = StreamService.saveImage(file);
 
+		System.out.println(url);
+
 		String responseScript = null;
 
 		try {

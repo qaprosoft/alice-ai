@@ -40,14 +40,12 @@ public class StreamService extends BasicService{
 
     public static String getStringFromInputStream(InputStream in){
         String str = "";
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
         try {
-            while (br.ready())
-                str+=br.readLine()+"\n";
+            while (in.available()>0) str+=(char)in.read();
         } catch (IOException e) {
-            LOGGER.info(e);
+            e.printStackTrace();
         }
+        System.out.println(str);
         return str;
     }
 
