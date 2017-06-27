@@ -64,11 +64,15 @@ public class UrlController
 											  RedirectAttributes redirectAttributes) throws IOException {
 		String url = StreamService.saveImage(file);
 
-		String responseScript = "sfsf";
+		String responseScript =null;
 		System.out.println(responseScript);
 		try {
 			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);
-			System.out.println(responseScript + " response script");
+
+
+			System.out.println("_____________");
+			System.out.println(responseScript );
+			System.out.println("_____________");
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
