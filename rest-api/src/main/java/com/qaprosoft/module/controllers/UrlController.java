@@ -45,8 +45,6 @@ public class UrlController
 			LOGGER.info("Can't get response!");
 		}
 
-		System.out.println(responseScript);
-
 		JSONObject jsonObject = new JSONObject(responseScript);
 		String metadata = (String) jsonObject.get("output_metadata");
 		System.out.println(metadata);
