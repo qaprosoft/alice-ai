@@ -7,6 +7,8 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 /**
@@ -46,8 +48,6 @@ public class StreamService extends BasicService{
             e.printStackTrace();
         }
 
-
-        System.out.println("str "+ str);
         return str;
     }
 
@@ -105,8 +105,18 @@ public class StreamService extends BasicService{
     }
 
 
-    public static  String saveImage(MultipartFile file1){
-        File file = new File(PATH_TO_IMG_FILE);
+    public static String saveImage(MultipartFile file1){
+        File file = null;
+
+
+        String postfix = getPostfix(file1.getOriginalFilename());
+
+        try {
+            file = File.createTempFile(IMAGE_NAME,postfix);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         FileOutputStream fos =null;
         try {
@@ -123,21 +133,26 @@ public class StreamService extends BasicService{
         }
 
         try {
-            System.out.println(inputStream.available());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
             while (inputStream.available()>0) fos.write(inputStream.read());
 
-            return PATH_TO_IMG_FILE;
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
-        return PATH_TO_IMG_FILE;
+        String parentPath = getParentPath(file.getAbsolutePath());
+        return parentPath;
     }
+
+
+    private static String getParentPath(String absolutePath){
+        Path path=  Paths.get(absolutePath);
+        return  path.getParent().toString();
+    }
+
+    private static String getPostfix(String str){
+    return str.substring(str.lastIndexOf("."),str.length());
+    }
+
 
 }
 

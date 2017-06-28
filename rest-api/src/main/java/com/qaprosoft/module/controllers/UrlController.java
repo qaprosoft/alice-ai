@@ -24,71 +24,69 @@ public class UrlController
 	private static final Logger LOGGER = Logger.getLogger(UrlController.class);
 
 
-	@RequestMapping("/")
-	public String index() {
-		return "index.html";
-	}
-
 	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/request", method = RequestMethod.POST, produces = MediaType.APPLICATION_XML_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String getJson(@RequestBody @Valid URLRequest request)
-	{
-		String url = request.getUrl();
-		String model = request.getModel();
-		String responseScript = null;
+	@RequestMapping(value = "/downloadXML", method = RequestMethod.POST,produces = MediaType.TEXT_XML_VALUE)
+	public @ResponseBody String uploadXML(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
+												 @RequestParam("responseType") String type, RedirectAttributes redirectAttributes) throws IOException {
 
-		StreamService.saveFileOnLocalDisk(url);
+		String path = StreamService.saveImage(file);
 
+		System.out.println(path);
+		String responseScript =null;
 		try {
-			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);
+			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,path);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
 
 		JSONObject jsonObject = new JSONObject(responseScript);
 		String metadata = (String) jsonObject.get("output_metadata");
-		System.out.println(metadata);
 		String response = StreamService.getStringFromURL(metadata);
-
 		//StreamService.deleteFile();
-
-
-		System.out.println(response);
 		return response;
 	}
 
 
 	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/download", method = RequestMethod.POST,produces = MediaType.TEXT_XML_VALUE)
-	public @ResponseBody String singleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
-											  RedirectAttributes redirectAttributes) throws IOException {
-		String url = StreamService.saveImage(file);
+	@RequestMapping(value = "/downloadJSON", method = RequestMethod.POST,produces = MediaType.TEXT_XML_VALUE)
+	public @ResponseBody String uploadJSON(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
+												 @RequestParam("responseType") String type, RedirectAttributes redirectAttributes) throws IOException {
 
-		System.out.println("image saved");
-		System.out.println(url+ " this url");
+		String path = StreamService.saveImage(file);
 
 		String responseScript =null;
 		try {
-			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);
+			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model, path);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
 
-
-		System.out.println(responseScript);
-
 		JSONObject jsonObject = new JSONObject(responseScript);
 		String metadata = (String) jsonObject.get("output_metadata");
-		System.out.println(metadata);
 		String response = StreamService.getStringFromURL(metadata);
-		System.out.println(response);
 		//StreamService.deleteFile();
 		return response;
 	}
 
 
+	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(value = "/downloadImage", method = RequestMethod.POST,produces = MediaType.IMAGE_JPEG_VALUE)
+	public @ResponseBody String uploadImage(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
+										   @RequestParam("responseType") String type, RedirectAttributes redirectAttributes) throws IOException {
 
+		String path = StreamService.saveImage(file);
+		String responseScript =null;
+		try {
+			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model, path);
+		} catch (IOException e) {
+			LOGGER.info("Can't get response!");
+		}
 
-
+		JSONObject jsonObject = new JSONObject(responseScript);
+		String metadata = (String) jsonObject.get("output_metadata");
+		String response = StreamService.getStringFromURL(metadata);
+		//StreamService.deleteFile();
+		return response;
+	}
 
 }

@@ -11,19 +11,18 @@ public class PythonScriptService extends BasicService{
 
     private static final Logger LOGGER = Logger.getLogger(PythonScriptService.class);
 
-    public static String exeсutePythonScriptWithArguments(String model, String url) throws IOException {
-        InputStream in = callPythonScript(AI_HOME + "/" +RECOGNIZE_SCRIPT,model, url);
-        System.out.println(in.available() + " in size" );
+    public static String exeсutePythonScriptWithArguments(String model, String path) throws IOException {
+        InputStream in = callPythonScript(AI_HOME + "/" +RECOGNIZE_SCRIPT,model, path);
 
         String str = StreamService.getStringFromInputStream(in);
         str=str.trim();
-        System.out.println("str "+ str );
+
         return str;
     }
 
 
-    public static InputStream callPythonScript(String pathToScript,String model, String url){
-        String[] cmd = {"/usr/bin/python", pathToScript, "--model", model,"--url", url};
+    public static InputStream callPythonScript(String pathToScript,String model, String path){
+        String[] cmd = {"/usr/bin/python", pathToScript, "--model", model,"--folder", path};
         Process p = null;
         try {
             p = Runtime.getRuntime().exec(cmd);
@@ -38,13 +37,7 @@ public class PythonScriptService extends BasicService{
 
         InputStream inputStream = p.getInputStream();
 
-        try {
-            while (inputStream.available()>0) System.out.print((char)inputStream.read());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-            return inputStream;
+        return inputStream;
 
     }
 
