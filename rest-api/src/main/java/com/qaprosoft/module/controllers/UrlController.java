@@ -71,14 +71,16 @@ public class UrlController
 			LOGGER.info("Can't get response!");
 		}
 
+
+		System.out.println(responseScript);
+
 		JSONObject jsonObject = new JSONObject(responseScript);
 		String metadata = (String) jsonObject.get("output_metadata");
 		System.out.println(metadata);
-		String response = StreamService.getStringFromURL(metadata);
+	//	String response = StreamService.getStringFromURL(metadata);
 
-		System.out.println(response);
 		//StreamService.deleteFile();
-		return response;
+		return "fs";//response;
 	}
 
 
