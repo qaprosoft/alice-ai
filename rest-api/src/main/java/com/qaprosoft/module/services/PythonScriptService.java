@@ -35,7 +35,17 @@ public class PythonScriptService extends BasicService{
         } catch (InterruptedException e) {
             LOGGER.info(e);
         }
-        return p.getInputStream();
+
+        InputStream inputStream = p.getInputStream();
+
+        try {
+            while (inputStream.available()>0) System.out.print((char)inputStream.read());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+            return inputStream;
+
     }
 
 
