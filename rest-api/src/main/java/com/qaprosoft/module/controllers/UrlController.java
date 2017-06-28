@@ -64,6 +64,9 @@ public class UrlController
 											  RedirectAttributes redirectAttributes) throws IOException {
 		String url = StreamService.saveImage(file);
 
+		System.out.println("image saved");
+		System.out.println(url+ " this url");
+
 		String responseScript =null;
 		try {
 			responseScript = PythonScriptService.exeсutePythonScriptWithArguments(model,url);
@@ -77,10 +80,10 @@ public class UrlController
 		JSONObject jsonObject = new JSONObject(responseScript);
 		String metadata = (String) jsonObject.get("output_metadata");
 		System.out.println(metadata);
-	//	String response = StreamService.getStringFromURL(metadata);
-
+		String response = StreamService.getStringFromURL(metadata);
+		System.out.println(response);
 		//StreamService.deleteFile();
-		return "fs";//response;
+		return response;
 	}
 
 

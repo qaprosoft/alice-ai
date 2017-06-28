@@ -45,11 +45,9 @@ public class StreamService extends BasicService{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            in.close();
-        } catch (IOException e) {
-            LOGGER.info(e);
-        }
+
+
+        System.out.println("str "+ str);
         return str;
     }
 
@@ -124,6 +122,11 @@ public class StreamService extends BasicService{
             e.printStackTrace();
         }
 
+        try {
+            System.out.println(inputStream.available());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         try {
             while (inputStream.available()>0) fos.write(inputStream.read());
 

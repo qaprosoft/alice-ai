@@ -13,8 +13,11 @@ public class PythonScriptService extends BasicService{
 
     public static String exeсutePythonScriptWithArguments(String model, String url) throws IOException {
         InputStream in = callPythonScript(AI_HOME + "/" +RECOGNIZE_SCRIPT,model, url);
+        System.out.println(in.available() + " in size" );
+
         String str = StreamService.getStringFromInputStream(in);
         str=str.trim();
+        System.out.println("str "+ str );
         return str;
     }
 
