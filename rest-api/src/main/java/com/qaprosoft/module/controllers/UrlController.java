@@ -1,7 +1,5 @@
 package com.qaprosoft.module.controllers;
 
-import javax.validation.Valid;
-import com.qaprosoft.module.controllers.models.URLRequest;
 import com.qaprosoft.module.services.PythonScriptService;
 import com.qaprosoft.module.services.StreamService;
 import org.apache.log4j.Logger;
