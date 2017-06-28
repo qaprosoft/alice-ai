@@ -108,7 +108,6 @@ public class StreamService extends BasicService{
     public static String saveImage(MultipartFile file1){
         File file = null;
 
-
         String postfix = getPostfix(file1.getOriginalFilename());
 
         try {
@@ -139,15 +138,9 @@ public class StreamService extends BasicService{
             e.printStackTrace();
         }
 
-        String parentPath = getParentPath(file.getAbsolutePath());
-        return parentPath;
+        return file.getAbsolutePath();
     }
 
-
-    private static String getParentPath(String absolutePath){
-        Path path=  Paths.get(absolutePath);
-        return  path.getParent().toString();
-    }
 
     private static String getPostfix(String str){
     return str.substring(str.lastIndexOf("."),str.length());
