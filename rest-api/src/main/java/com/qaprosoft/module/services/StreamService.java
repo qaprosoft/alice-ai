@@ -142,6 +142,7 @@ public class StreamService extends BasicService{
     }
 
 
+
     private static String getPostfix(String str){
     return str.substring(str.lastIndexOf("."),str.length());
     }
