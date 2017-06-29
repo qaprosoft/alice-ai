@@ -27,19 +27,15 @@ public class UrlController
 		String tmpPath = StreamService.getPathTempFolder();
 		String path = StreamService.saveImage(file, tmpPath);
 
-		System.out.println(tmpPath);
-		System.out.println(path);
-
 		try {
+			PythonScriptService.goToFolderWithScript();
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
-
 		String response = StreamService.getStringFromFile(path + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
-
 		System.out.println(response);
-		//StreamService.deleteTempFolder(tmpPath);
+		StreamService.deleteTempFolder(tmpPath);
 
 		return response;
 	}
@@ -52,10 +48,8 @@ public class UrlController
 		String tmpPath = StreamService.getPathTempFolder();
 		String path = StreamService.saveImage(file, tmpPath);
 
-		System.out.println(tmpPath);
-		System.out.println(path);
-
 		try {
+			PythonScriptService.goToFolderWithScript();
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
@@ -65,7 +59,7 @@ public class UrlController
 
 
 		System.out.println(response);
-		//StreamService.deleteTempFolder(tmpPath);
+		StreamService.deleteTempFolder(tmpPath);
 
 		return response;
 	}
@@ -80,6 +74,7 @@ public class UrlController
 		String path = StreamService.saveImage(file, tmpPath);
 
 		try {
+			PythonScriptService.goToFolderWithScript();
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
@@ -88,7 +83,7 @@ public class UrlController
 		String response = StreamService.getStringFromFile(path + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
 
 		System.out.println(response);
-//StreamService.deleteTempFolder(tmpPath);
+		StreamService.deleteTempFolder(tmpPath);
 
 		return response;
 	}
