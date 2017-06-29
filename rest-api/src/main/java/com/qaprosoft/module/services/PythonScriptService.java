@@ -13,7 +13,7 @@ public class PythonScriptService extends BasicService{
 
     public static void exeсutePythonScriptWithArguments(String model, String path, String type) throws IOException {
 
-        String[] cmd = {"/usr/bin/python", AI_HOME + "/" +RECOGNIZE_SCRIPT, "--model", model,"--folder", path, "--output", type};
+        String[] cmd = { "cd",AI_HOME,"/usr/bin/python", AI_HOME + "/" +RECOGNIZE_SCRIPT, "--model", model,"--folder", path, "--output", type};
 
         Process p = null;
         try {
