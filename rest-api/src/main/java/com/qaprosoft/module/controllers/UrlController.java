@@ -33,7 +33,7 @@ public class UrlController
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
-		String response = StreamService.getStringFromFile(path + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
+		String response = StreamService.getStringFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
 		System.out.println(response);
 		StreamService.deleteTempFolder(tmpPath);
 
@@ -55,7 +55,7 @@ public class UrlController
 			LOGGER.info("Can't get response!");
 		}
 
-		String response = StreamService.getStringFromFile(path + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
+		String response = StreamService.getStringFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
 
 
 		System.out.println(response);
@@ -80,7 +80,7 @@ public class UrlController
 			LOGGER.info("Can't get response!");
 		}
 
-		String response = StreamService.getStringFromFile(path + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
+		String response = StreamService.getStringFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
 
 		System.out.println(response);
 		StreamService.deleteTempFolder(tmpPath);
