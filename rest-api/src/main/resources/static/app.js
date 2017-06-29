@@ -48,7 +48,7 @@ $.ajax({
 function downloadFileJSON() {
 $.ajax({
         url: "/downloadJSON",
-        type: "GET",
+        type: "POST",
         data: new FormData($("#fileUploadForm")[0]),
         enctype: 'multipart/form-data',
         processData: false,

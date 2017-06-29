@@ -62,7 +62,7 @@ public class UrlController
 
 
 	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/downloadImage", method = RequestMethod.GET)
+	@RequestMapping(value = "/downloadImage", method = RequestMethod.POST)
 	public @ResponseBody byte[] uploadImage(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
 										   @RequestParam("responseType") String type) throws IOException {
 
