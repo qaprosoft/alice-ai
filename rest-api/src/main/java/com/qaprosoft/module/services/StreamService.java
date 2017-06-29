@@ -3,6 +3,8 @@ package com.qaprosoft.module.services;
 import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 
@@ -52,16 +54,12 @@ public class StreamService extends BasicService{
     }
 
 
-    public static InputStream getIputStreamFromFile(String path){
-        File file = new File(path);
-        InputStream inputStream =null;
+    public static byte[] getIputStreamFromFile(String path){
         try {
-            inputStream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
+            return Files.readAllBytes(Paths.get(path));
+        } catch (IOException e) {
             LOGGER.info(e);
         }
-
-        return inputStream;
     }
 
 

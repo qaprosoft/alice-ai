@@ -77,11 +77,9 @@ public class UrlController
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
-
-		InputStream in = StreamService.getIputStreamFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
+		byte[] in = StreamService.getIputStreamFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
 		StreamService.deleteTempFolder(tmpPath);
-
-		return IOUtils.toByteArray(in);
+		return in;
 	}
 
 
