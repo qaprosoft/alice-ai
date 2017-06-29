@@ -15,9 +15,6 @@ public class PythonScriptService extends BasicService{
 
         String[] cmd = {"/usr/bin/python", AI_HOME + "/" +RECOGNIZE_SCRIPT, "--model", model,"--folder", path, "--output", type};
 
-        for (int i = 0; i <cmd.length ; i++) {
-            System.out.print(cmd[i]+" ");
-        }
         Process p = null;
         try {
             p = Runtime.getRuntime().exec(cmd);
@@ -39,9 +36,6 @@ public class PythonScriptService extends BasicService{
 
         String[] cmd = {"cd", AI_HOME };
 
-        for (int i = 0; i <cmd.length ; i++) {
-            System.out.print(cmd[i]+" ");
-        }
         Process p = null;
         try {
             p = Runtime.getRuntime().exec(cmd);
