@@ -16,27 +16,37 @@ public class StreamService extends BasicService{
     public static String getStringFromFile(String path){
         File file = new File(path);
 
-        InputStream inputStream =null;
+        BufferedReader fin = null;
         try {
-            inputStream = new FileInputStream(file);
+            fin = new BufferedReader(new FileReader(file));
         } catch (FileNotFoundException e) {
             LOGGER.info(e);
         }
+        String response="";
+        String line;
 
         try {
-            System.out.println("inputStream size " + inputStream.available());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String response ="";
-
-        try {
-            while (inputStream.available()>0)
-                response+=(char)inputStream.read();
+            while ((line = fin.readLine()) != null) response+=line;
         } catch (IOException e) {
             LOGGER.info(e);
         }
+
+
+//        InputStream inputStream =null;
+//        try {
+//            inputStream = new FileInputStream(file);
+//        } catch (FileNotFoundException e) {
+//            LOGGER.info(e);
+//        }
+
+//        String response ="";
+//
+//        try {
+//            while (inputStream.available()>0)
+//                response+=(char)inputStream.read();
+//        } catch (IOException e) {
+//            LOGGER.info(e);
+//        }
 
         return response;
     }
