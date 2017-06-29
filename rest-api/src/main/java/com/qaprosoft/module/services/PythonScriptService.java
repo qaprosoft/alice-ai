@@ -12,13 +12,7 @@ public class PythonScriptService extends BasicService{
     private static final Logger LOGGER = Logger.getLogger(PythonScriptService.class);
 
     public static void exeсutePythonScriptWithArguments(String model, String path, String type) throws IOException {
-         callPythonScript(AI_HOME + "/" +RECOGNIZE_SCRIPT,model, path, type);
-
-    }
-
-
-    public static void callPythonScript(String pathToScript,String model, String path, String type){
-        String[] cmd = {"/usr/bin/python", pathToScript, "--model", model,"--folder", path, "--output", type};
+        String[] cmd = {"/usr/bin/python", AI_HOME + "/" +RECOGNIZE_SCRIPT, "--model", model,"--folder", path, "--output", type};
         Process p = null;
         try {
             p = Runtime.getRuntime().exec(cmd);
@@ -30,7 +24,6 @@ public class PythonScriptService extends BasicService{
         } catch (InterruptedException e) {
             LOGGER.info(e);
         }
-
     }
 
 

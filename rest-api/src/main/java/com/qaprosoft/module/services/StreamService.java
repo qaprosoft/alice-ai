@@ -10,6 +10,8 @@ import java.net.URLConnection;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static org.apache.tomcat.util.http.fileupload.FileUtils.deleteDirectory;
+
 
 /**
  * Created by anazarenko on 6/21/17.
@@ -40,81 +42,109 @@ public class StreamService extends BasicService{
     }
 
 
-    public static String getStringFromInputStream(InputStream in){
-        String str = "";
+
+
+    public static String getStringFromFile(String path){
+
+
+
+       File file = new File(path);
+
+        InputStream inputStream =null;
         try {
-            while (in.available()>0) str+=(char)in.read();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return str;
-    }
-
-
-    public static String getStringFromURL(String url){
-        return getStringFromInputStream(getInputStreamFromNet(url));
-    }
-
-
-    public static void saveFileOnLocalDisk(String url){
-        URL link = null;
-        try {
-            link = new URL(url);
-        } catch (MalformedURLException e) {
-            LOGGER.info(e);
-        }
-        File file = new File(PATH_TO_IMG_FILE);
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(file);
+            inputStream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
             LOGGER.info(e);
         }
-        InputStream in = null;
+
+        StringBuilder builder = new StringBuilder();
+
+
+        BufferedInputStream in = new BufferedInputStream(inputStream);
+
+        byte[] buf = new byte[1024];
         try {
-            in = new BufferedInputStream(link.openStream());
-        } catch (IOException e) {
-            LOGGER.info(e);
-        }
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-            byte[] buf = new byte[1024];
-            int n ;
-        try {
-            while (-1!=(n=in.read(buf)))
+            while (-1!=in.read(buf))
             {
-                fos.write(buf, 0, n);
+                builder.append(buf);
             }
+
         } catch (IOException e) {
             LOGGER.info(e);
         }
 
-        try {
-            fos.close();
-            out.close();
-            in.close();
-        } catch (IOException e) {
-            LOGGER.info(e);
-        }
-
-    }
-
-    public static void deleteFile(){
-        File file = new File(PATH_TO_IMG_FILE);
-        file.delete();
+        return builder.toString();
     }
 
 
-    public static String saveImage(MultipartFile file1){
-        File file = null;
+//    public static void saveFileOnLocalDisk(String url){
+//        URL link = null;
+//        try {
+//            link = new URL(url);
+//        } catch (MalformedURLException e) {
+//            LOGGER.info(e);
+//        }
+//        File file = new File(PATH_TO_IMG_FILE);
+//        FileOutputStream fos = null;
+//        try {
+//            fos = new FileOutputStream(file);
+//        } catch (FileNotFoundException e) {
+//            LOGGER.info(e);
+//        }
+//        InputStream in = null;
+//
+//        try {
+//            in = new BufferedInputStream(link.openStream());
+//        } catch (IOException e) {
+//            LOGGER.info(e);
+//        }
+//
+//            byte[] buf = new byte[1024];
+//            int n ;
+//        try {
+//            while (-1!=(n=in.read(buf)))
+//            {
+//                fos.write(buf, 0, n);
+//            }
+//        } catch (IOException e) {
+//            LOGGER.info(e);
+//        }
+//
+//        try {
+//            fos.close();
+//            in.close();
+//        } catch (IOException e) {
+//            LOGGER.info(e);
+//        }
+//
+//    }
 
-        String postfix = getPostfix(file1.getOriginalFilename());
+    public static void deleteTempFolder(String path){
 
-        try {
-            file = File.createTempFile(IMAGE_NAME,postfix);
-        } catch (IOException e) {
-            e.printStackTrace();
+        File file = new File(path);
+
+        if(!file.exists())
+            return;
+        if(file.isDirectory())
+        {
+            for(File f : file.listFiles())
+                deleteTempFolder(f.getAbsolutePath());
+            file.delete();
         }
+        else
+        {
+            file.delete();
+        }
+
+
+    }
+
+
+    public static String saveImage(MultipartFile inputFile, String path){
+
+        String postfix = getPostfix(inputFile.getOriginalFilename());
+
+        File file = new File(path +"/"+ IMAGE_NAME+postfix);//File.createTempFile(IMAGE_NAME,postfix);
 
 
         FileOutputStream fos =null;
@@ -126,16 +156,24 @@ public class StreamService extends BasicService{
 
         InputStream inputStream =null;
         try {
-         inputStream = file1.getInputStream();
+         inputStream = inputFile.getInputStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        BufferedInputStream in = new BufferedInputStream(inputStream);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        int n ;
         try {
-            while (inputStream.available()>0) fos.write(inputStream.read());
+            while (-1!=(n=in.read(buf)))
+            {
+                fos.write(buf, 0, n);
+            }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info(e);
         }
 
         return file.getAbsolutePath();
@@ -146,6 +184,17 @@ public class StreamService extends BasicService{
     private static String getPostfix(String str){
     return str.substring(str.lastIndexOf("."),str.length());
     }
+
+
+    public static String getPathTempFolder(){
+
+        File file  = new File (PATH_TO_TMP_FOLDER+"fdsfsfsfsfsf");
+        file.mkdir();
+        return file.getAbsolutePath();
+
+
+    }
+
 
 
 }

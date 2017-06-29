@@ -2,6 +2,7 @@ package com.qaprosoft.module.controllers;
 
 import com.qaprosoft.module.services.PythonScriptService;
 import com.qaprosoft.module.services.StreamService;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,11 +26,10 @@ public class UrlController
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/downloadXML", method = RequestMethod.POST,produces = MediaType.TEXT_XML_VALUE)
 	public @ResponseBody String uploadXML(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
-												 @RequestParam("responseType") String type, RedirectAttributes redirectAttributes) throws IOException {
+												 @RequestParam("responseType") String type, RedirectAttributes redirectAttributes) throws IOException, InterruptedException {
 
-		String path = StreamService.saveImage(file);
-
-		System.out.println(path);
+		String tmpPath = StreamService.getPathTempFolder();
+		String path = StreamService.saveImage(file, tmpPath);
 
 		try {
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
@@ -37,9 +37,10 @@ public class UrlController
 			LOGGER.info("Can't get response!");
 		}
 
-		String response = StreamService.getStringFromURL(path);
+		String response = StreamService.getStringFromFile(path+"/out/"+"test_file."+type);
+
 		System.out.println(response);
-		//StreamService.deleteFile();
+
 		return response;
 	}
 
@@ -48,20 +49,20 @@ public class UrlController
 	@RequestMapping(value = "/downloadJSON", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String uploadJSON(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
 												 @RequestParam("responseType") String type, RedirectAttributes redirectAttributes) throws IOException {
-
-		String path = StreamService.saveImage(file);
-		System.out.println(path);
+		String tmpPath = StreamService.getPathTempFolder();
+		String path = StreamService.saveImage(file, tmpPath);
 
 		try {
-		PythonScriptService.exeсutePythonScriptWithArguments(model, getParentPath(path), type);
+			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
 
+		String response = StreamService.getStringFromFile(path+"/out/"+"test_file."+type);
 
-		String response = StreamService.getStringFromURL(path);
+
 		System.out.println(response);
-		//StreamService.deleteFile();
+
 		return response;
 	}
 
@@ -71,18 +72,20 @@ public class UrlController
 	public @ResponseBody String uploadImage(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
 										   @RequestParam("responseType") String type, RedirectAttributes redirectAttributes) throws IOException {
 
-		String path = StreamService.saveImage(file);
-		System.out.println(path);
+		String tmpPath = StreamService.getPathTempFolder();
+		String path = StreamService.saveImage(file, tmpPath);
 
 		try {
-		PythonScriptService.exeсutePythonScriptWithArguments(model, getParentPath(path), type);
+			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
 
-		String response = StreamService.getStringFromURL(path);
+		String response = StreamService.getStringFromFile(path+"/out/"+"test_file."+type);
+
 		System.out.println(response);
-		//StreamService.deleteFile();
+
+
 		return response;
 	}
 

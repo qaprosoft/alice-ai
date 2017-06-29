@@ -10,7 +10,7 @@ import java.util.Properties;
  */
 
 public class BasicService {
-    protected final static String PATH_TO_IMG_FILE;
+    protected final static String PATH_TO_TMP_FOLDER;
     protected final static String AI_HOME;
     protected final static String RECOGNIZE_SCRIPT;
     protected final static String IMAGE_NAME;
@@ -25,10 +25,10 @@ public class BasicService {
             LOGGER.info(e);
         }
 
-        AI_HOME= properties.getProperty("AI_HOME");
+        AI_HOME = properties.getProperty("AI_HOME");
         RECOGNIZE_SCRIPT = properties.getProperty("RECOGNIZE_SCRIPT");
         IMAGE_NAME = properties.getProperty("INPUT_IMAGE_FILENAME");
-        PATH_TO_IMG_FILE=properties.getProperty("PATH_INPUT_IMAGE")+"/"+properties.getProperty("INPUT_IMAGE_FILENAME");
+        PATH_TO_TMP_FOLDER = properties.getProperty("PATH_TEMP_FOLDER");
     }
 
 }

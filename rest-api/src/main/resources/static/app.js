@@ -1,5 +1,5 @@
 var host = "54.245.105.12:8080";
-//var host = "localhost:8080";
+//mvn cleanvar host = "localhost:8080";
 
 function downloadFile(){
 var radio = $('input[name=responseType]:checked').val();
