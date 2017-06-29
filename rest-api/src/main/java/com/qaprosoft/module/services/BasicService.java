@@ -13,7 +13,7 @@ public class BasicService {
     protected final static String PATH_TO_TMP_FOLDER;
     protected final static String AI_HOME;
     protected final static String RECOGNIZE_SCRIPT;
-    protected final static String IMAGE_NAME;
+
 
     private static final Logger LOGGER = Logger.getLogger(BasicService.class);
 
@@ -27,7 +27,6 @@ public class BasicService {
 
         AI_HOME = properties.getProperty("AI_HOME");
         RECOGNIZE_SCRIPT = properties.getProperty("RECOGNIZE_SCRIPT");
-        IMAGE_NAME = properties.getProperty("INPUT_IMAGE_FILENAME");
         PATH_TO_TMP_FOLDER = properties.getProperty("PATH_TEMP_FOLDER");
     }
 

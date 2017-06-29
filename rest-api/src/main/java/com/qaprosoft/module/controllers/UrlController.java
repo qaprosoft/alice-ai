@@ -8,8 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.*;
 import java.nio.file.Paths;
 
@@ -25,10 +23,12 @@ public class UrlController
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/downloadXML", method = RequestMethod.POST,produces = MediaType.TEXT_XML_VALUE)
 	public @ResponseBody String uploadXML(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
-												 @RequestParam("responseType") String type, RedirectAttributes redirectAttributes) throws IOException, InterruptedException {
-
+												 @RequestParam("responseType") String type) throws IOException, InterruptedException {
 		String tmpPath = StreamService.getPathTempFolder();
 		String path = StreamService.saveImage(file, tmpPath);
+
+		System.out.println(tmpPath);
+		System.out.println(path);
 
 		try {
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
@@ -36,9 +36,10 @@ public class UrlController
 			LOGGER.info("Can't get response!");
 		}
 
-		String response = StreamService.getStringFromFile(path+"/out/"+"test_file."+type);
+		String response = StreamService.getStringFromFile(path + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
 
 		System.out.println(response);
+		//StreamService.deleteTempFolder(tmpPath);
 
 		return response;
 	}
@@ -47,9 +48,12 @@ public class UrlController
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/downloadJSON", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String uploadJSON(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
-												 @RequestParam("responseType") String type, RedirectAttributes redirectAttributes) throws IOException {
+												 @RequestParam("responseType") String type) throws IOException {
 		String tmpPath = StreamService.getPathTempFolder();
 		String path = StreamService.saveImage(file, tmpPath);
+
+		System.out.println(tmpPath);
+		System.out.println(path);
 
 		try {
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
@@ -57,10 +61,11 @@ public class UrlController
 			LOGGER.info("Can't get response!");
 		}
 
-		String response = StreamService.getStringFromFile(path+"/out/"+"test_file."+type);
+		String response = StreamService.getStringFromFile(path + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
 
 
 		System.out.println(response);
+		//StreamService.deleteTempFolder(tmpPath);
 
 		return response;
 	}
@@ -69,7 +74,7 @@ public class UrlController
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/downloadImage", method = RequestMethod.POST,produces = MediaType.IMAGE_JPEG_VALUE)
 	public @ResponseBody String uploadImage(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
-										   @RequestParam("responseType") String type, RedirectAttributes redirectAttributes) throws IOException {
+										   @RequestParam("responseType") String type) throws IOException {
 
 		String tmpPath = StreamService.getPathTempFolder();
 		String path = StreamService.saveImage(file, tmpPath);
@@ -80,10 +85,10 @@ public class UrlController
 			LOGGER.info("Can't get response!");
 		}
 
-		String response = StreamService.getStringFromFile(path+"/out/"+"test_file."+type);
+		String response = StreamService.getStringFromFile(path + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
 
 		System.out.println(response);
-
+//StreamService.deleteTempFolder(tmpPath);
 
 		return response;
 	}
@@ -91,6 +96,10 @@ public class UrlController
 
 	private static String getParentPath(String absolutePath){
 		return  Paths.get(absolutePath).getParent().toString();
+	}
+
+	private static String getPrefixWithDot(String str){
+		return str.substring(0,str.lastIndexOf(".")+1);
 	}
 
 }
