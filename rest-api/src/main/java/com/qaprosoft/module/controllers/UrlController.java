@@ -76,7 +76,7 @@ public class UrlController
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
-		String encodedImage = StreamService.getIputStreamFromFile(path);
+		String encodedImage = StreamService.getIputStreamFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
 		StreamService.deleteTempFolder(tmpPath);
 
 		return encodedImage;
