@@ -28,7 +28,7 @@ public class UrlController
 		String path = StreamService.saveImage(file, tmpPath);
 
 		try {
-			PythonScriptService.goToFolderWithScript();
+		//	PythonScriptService.goToFolderWithScript();
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
@@ -49,7 +49,7 @@ public class UrlController
 		String path = StreamService.saveImage(file, tmpPath);
 
 		try {
-			PythonScriptService.goToFolderWithScript();
+		//	PythonScriptService.goToFolderWithScript();
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
@@ -74,7 +74,7 @@ public class UrlController
 		String path = StreamService.saveImage(file, tmpPath);
 
 		try {
-			PythonScriptService.goToFolderWithScript();
+		//	PythonScriptService.goToFolderWithScript();
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
