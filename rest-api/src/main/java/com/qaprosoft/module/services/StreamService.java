@@ -22,21 +22,17 @@ public class StreamService extends BasicService{
             LOGGER.info(e);
         }
 
-        StringBuilder builder = new StringBuilder();
-        BufferedInputStream in = new BufferedInputStream(inputStream);
+        String response ="";
 
-        byte[] buf = new byte[1024];
         try {
-            while (-1!=in.read(buf))
-            {
-                builder.append(buf);
-            }
+            while (inputStream.available()>0)
 
+                response+=(char)inputStream.read();
         } catch (IOException e) {
             LOGGER.info(e);
         }
 
-        return builder.toString();
+        return response;
     }
 
 
