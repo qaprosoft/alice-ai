@@ -60,6 +60,7 @@ public class StreamService extends BasicService{
         } catch (IOException e) {
             LOGGER.info(e);
         }
+        return null;
     }
 
 
