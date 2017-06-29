@@ -2,6 +2,7 @@ package com.qaprosoft.module.controllers;
 
 import com.qaprosoft.module.services.PythonScriptService;
 import com.qaprosoft.module.services.StreamService;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,11 +28,6 @@ public class UrlController
 		String tmpPath = StreamService.getPathTempFolder();
 		String path = StreamService.saveImage(file, tmpPath);
 
-
-
-		System.out.println(tmpPath);
-		System.out.println(path);
-
 		try {
 
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
@@ -39,12 +35,8 @@ public class UrlController
 			LOGGER.info("Can't get response!");
 		}
 
-		System.out.println(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
 		String response = StreamService.getStringFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
-
-		System.out.println(response);
 		StreamService.deleteTempFolder(tmpPath);
-
 		return response;
 	}
 
@@ -56,10 +48,6 @@ public class UrlController
 		String tmpPath = StreamService.getPathTempFolder();
 		String path = StreamService.saveImage(file, tmpPath);
 
-
-		System.out.println(tmpPath);
-		System.out.println(path);
-
 		try {
 
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
@@ -67,43 +55,29 @@ public class UrlController
 			LOGGER.info("Can't get response!");
 		}
 
-		System.out.println(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
 		String response = StreamService.getStringFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
-
-
-		System.out.println(response);
 		StreamService.deleteTempFolder(tmpPath);
-
 		return response;
 	}
 
 
 	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/downloadImage", method = RequestMethod.POST,produces = MediaType.IMAGE_JPEG_VALUE)
-	public @ResponseBody String uploadImage(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
+	@RequestMapping(value = "/downloadImage", method = RequestMethod.POST)
+	public @ResponseBody byte[] uploadImage(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
 										   @RequestParam("responseType") String type) throws IOException {
 
 		String tmpPath = StreamService.getPathTempFolder();
 		String path = StreamService.saveImage(file, tmpPath);
-
-		System.out.println(tmpPath);
-		System.out.println(path);
-
-
 		try {
 
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
-		System.out.println(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
 
-		String response = StreamService.getStringFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
-
-		System.out.println(response);
+		InputStream in = StreamService.getIputStreamFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
 		StreamService.deleteTempFolder(tmpPath);
-
-		return response;
+		return IOUtils.toByteArray(in);
 	}
 
 

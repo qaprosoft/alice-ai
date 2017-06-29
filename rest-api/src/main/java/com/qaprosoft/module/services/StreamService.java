@@ -36,6 +36,23 @@ public class StreamService extends BasicService{
     }
 
 
+    public static InputStream getIputStreamFromFile(String path){
+        File file = new File(path);
+        InputStream inputStream =null;
+        try {
+            inputStream = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            LOGGER.info(e);
+        }
+
+        return inputStream;
+    }
+
+
+
+
+
+
 
     public static void deleteTempFolder(String path){
         File file = new File(path);

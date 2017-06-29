@@ -1,8 +1,8 @@
-var host = "54.245.105.12:8080";
-//var host = "localhost:8080";
+//var host = "54.245.105.12:8080";
+var host = "localhost:8080";
 
 function downloadFile(){
-var radio = $('input[name=responseType]:checked').val();
+ var radio = $('input[name=responseType]:checked').val();
 if (radio == 'xml') {
     downloadFileXML();
 }else
@@ -10,10 +10,19 @@ if (radio == 'json') {
     downloadFileJSON();
 }else
 downloadFileImage();
+
 }
 
 
+function resetText(){
+var curtain = document.getElementById("curtain");
+curtain.innerHTML= "<h1></h1>" ;
+curtain.style.display = 'none';
+ }
+
+
 function downloadFileXML() {
+resetText();
 $.ajax({
         url: "/downloadXML",
         type: "POST",
@@ -25,7 +34,7 @@ $.ajax({
 	    success: function(response) {
 	    var curtain = document.getElementById("curtain");
                    curtain.style.display = 'block';
-                   curtain.innerHTML= "<h1>All is ok! </h1>" ;
+                   curtain.innerHTML= "<h1>All is ok!</h1>" ;
 
 	    },
 	     error: function(response) {
