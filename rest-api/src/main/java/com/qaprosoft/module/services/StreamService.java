@@ -23,11 +23,16 @@ public class StreamService extends BasicService{
             LOGGER.info(e);
         }
 
+        try {
+            System.out.println("inputStream size " + inputStream.available());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         String response ="";
 
         try {
             while (inputStream.available()>0)
-
                 response+=(char)inputStream.read();
         } catch (IOException e) {
             LOGGER.info(e);
