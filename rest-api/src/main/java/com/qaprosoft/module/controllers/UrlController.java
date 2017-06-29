@@ -27,6 +27,11 @@ public class UrlController
 		String tmpPath = StreamService.getPathTempFolder();
 		String path = StreamService.saveImage(file, tmpPath);
 
+
+
+		System.out.println(tmpPath);
+		System.out.println(path);
+
 		try {
 
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
@@ -47,6 +52,10 @@ public class UrlController
 												 @RequestParam("responseType") String type) throws IOException {
 		String tmpPath = StreamService.getPathTempFolder();
 		String path = StreamService.saveImage(file, tmpPath);
+
+
+		System.out.println(tmpPath);
+		System.out.println(path);
 
 		try {
 
@@ -72,6 +81,10 @@ public class UrlController
 
 		String tmpPath = StreamService.getPathTempFolder();
 		String path = StreamService.saveImage(file, tmpPath);
+
+		System.out.println(tmpPath);
+		System.out.println(path);
+
 
 		try {
 
