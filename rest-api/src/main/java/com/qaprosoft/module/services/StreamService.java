@@ -17,26 +17,27 @@ public class StreamService extends BasicService{
         File file = new File(path);
 
 
-        BufferedReader reader = null;
-        String response = "";
+        FileInputStream fis = null;
         try {
-            reader = new BufferedReader(
-                    new InputStreamReader(
-                            new FileInputStream(file)));
-            String str;
-            while ((str = reader.readLine()) != null) {
-               response +=str ;
+            fis = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader br = new BufferedReader(isr);
+        String line,response="";
+
+        try {
+            while((line = br.readLine()) != null){
+                response+=line;
             }
         } catch (IOException e) {
             LOGGER.info(e);
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    LOGGER.info(e);
-                }
-            }
+        }
+        try {
+            br.close();
+        } catch (IOException e) {
+            LOGGER.info(e);
         }
 
         return response;
