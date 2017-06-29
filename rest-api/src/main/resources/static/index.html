@@ -7,7 +7,7 @@
 <body>
 <div align="center">
     <form method="POST" action="/download" enctype="multipart/form-data" id="fileUploadForm">
-        <h2>File to upload: <input type="file" name="file" accept="image/jpeg,image/png,image/gif" onclick="resetText();"></h2>
+        <h2>File to upload: <input  id="browse" type="file"  name="file" accept="image/jpeg,image/png,image/gif"  onclick="resetText();"></h2>
         <h2>Model: <input type="text" name="name" value="default"></h2>
         <div>
             <h2>Output type :</h2>
@@ -15,13 +15,13 @@
             <input type="radio" name="responseType" value="xml" onclick="resetText();">xml</input>
             <input type="radio" name="responseType" value="img" onclick="resetText();">img</input>
         </div>
-        <h2><input type="button"  value="Proccess"  onclick="downloadFile();"> Press here to upload the file!</h2>
+        <h2><input type="button"  value="Proccess"  id="btn" onclick="downloadFile();"> Press here to upload the file!</h2>
     </form>
 </div>
 <div id="curtain" align="center" style="display: none;"></div>
 </br>
 
-<img id="ItemPreview" src="data:image/png;base64,byte Array">
+<div align="center"> <img id="ItemPreview" src=""  style="display: none;"  height="700" width="700" /> </div>
 
 <script src="jquery.js"></script>
 <script src="app.js"></script>

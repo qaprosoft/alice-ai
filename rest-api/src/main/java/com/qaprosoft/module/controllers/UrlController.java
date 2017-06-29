@@ -2,8 +2,9 @@ package com.qaprosoft.module.controllers;
 
 import com.qaprosoft.module.services.PythonScriptService;
 import com.qaprosoft.module.services.StreamService;
-import org.apache.commons.io.IOUtils;
+
 import org.apache.log4j.Logger;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -63,8 +64,8 @@ public class UrlController
 
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/downloadImage", method = RequestMethod.POST)
-	public @ResponseBody byte[] uploadImage(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
-										   @RequestParam("responseType") String type) throws IOException {
+	public @ResponseBody String uploadImage(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
+									   @RequestParam("responseType") String type) throws IOException {
 
 		String tmpPath = StreamService.getPathTempFolder();
 		String path = StreamService.saveImage(file, tmpPath);
@@ -75,10 +76,21 @@ public class UrlController
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
-		byte[] in = StreamService.getIputStreamFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
+		String encodedImage = StreamService.getIputStreamFromFile(path);
 		StreamService.deleteTempFolder(tmpPath);
-		return in;
+
+		return encodedImage;
+
 	}
+
+
+
+
+
+
+
+
+
 
 
 	private static String getParentPath(String absolutePath){

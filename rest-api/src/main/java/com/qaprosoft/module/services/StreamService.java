@@ -1,10 +1,11 @@
 package com.qaprosoft.module.services;
 
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 
@@ -43,13 +44,24 @@ public class StreamService extends BasicService{
     }
 
 
-    public static byte[] getIputStreamFromFile(String path){
+    public static String getIputStreamFromFile(String path){
+        File file  =new File(path);
+
+        BufferedImage image = null;
         try {
-            return Files.readAllBytes(Paths.get(path));
+            image = ImageIO.read(file);
         } catch (IOException e) {
             LOGGER.info(e);
         }
-        return null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, getPostfixWithoutDot(path), baos);
+        } catch (IOException e) {
+            LOGGER.info(e);
+        }
+
+        String encodedImage = Base64.encode(baos.toByteArray());
+        return encodedImage;
     }
 
 
@@ -124,6 +136,10 @@ public class StreamService extends BasicService{
     return str.substring(str.lastIndexOf("."),str.length());
     }
 
+    private static String getPostfixWithoutDot(String str){
+        return str.substring(str.lastIndexOf(".")+1,str.length());
+    }
+
 
     private static String getPrefix(String str){
         return str.substring(0,str.lastIndexOf("."));
@@ -142,6 +158,8 @@ public class StreamService extends BasicService{
         String filename = id.toString().replaceAll("-","");
         return filename;
     }
+
+
 
 }
 
