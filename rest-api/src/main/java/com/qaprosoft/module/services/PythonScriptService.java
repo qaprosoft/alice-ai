@@ -16,9 +16,6 @@ public class PythonScriptService extends BasicService{
 
         String[] cmd = {"/usr/bin/python", AI_HOME + "/" + RECOGNIZE_SCRIPT, "--model", model,"--folder", path, "--output", type};
 
-        for (int i = 0; i <cmd.length ; i++) {
-            System.out.print(cmd[i] +" ");
-        }
         Process p = null;
         try {
             p = Runtime.getRuntime().exec(cmd);
@@ -33,30 +30,9 @@ public class PythonScriptService extends BasicService{
 
 
     }
-
-
-
-    public static void goToFolderWithScript() throws IOException {
-
-        String[] cmd = {"cd", AI_HOME + "/"};
-
-        Process p = null;
-        try {
-            p = Runtime.getRuntime().exec(cmd);
-        } catch (IOException e) {
-            LOGGER.info(e);
-        }
-        try {
-            p.waitFor();
-        } catch (InterruptedException e) {
-            LOGGER.info(e);
-        }
-
-
-    }
-
-
-
-
 
 }
+
+
+
+

@@ -16,16 +16,19 @@ public class StreamService extends BasicService{
     public static String getStringFromFile(String path){
         File file = new File(path);
 
-        InputStream inputStream = null;
+        InputStream inputStream =null;
         try {
             inputStream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
             LOGGER.info(e);
         }
-        String response = "";
+
+        String response ="";
 
         try {
-            while (inputStream.available()>0) response+= (char)inputStream.read();
+            while (inputStream.available()>0)
+
+                response+=(char)inputStream.read();
         } catch (IOException e) {
             LOGGER.info(e);
         }
