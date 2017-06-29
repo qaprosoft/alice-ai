@@ -34,7 +34,7 @@ public class PythonScriptService extends BasicService{
 
     public static void goToFolderWithScript() throws IOException {
 
-        String[] cmd = {"cd", AI_HOME };
+        String[] cmd = {"cd", AI_HOME + "/"};
 
         Process p = null;
         try {
