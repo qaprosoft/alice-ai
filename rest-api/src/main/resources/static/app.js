@@ -48,7 +48,7 @@ $.ajax({
 function downloadFileJSON() {
 $.ajax({
         url: "/downloadJSON",
-        type: "POST",
+        type: "GET",
         data: new FormData($("#fileUploadForm")[0]),
         enctype: 'multipart/form-data',
         processData: false,
@@ -77,10 +77,14 @@ $.ajax({
         processData: false,
         contentType: false,
         cache: false,
-	    success: function(response) {
+	    success: function(data) {
 	    var curtain = document.getElementById("curtain");
                    curtain.style.display = 'block';
                    curtain.innerHTML= "<h1>All is ok! </h1>" ;
+
+
+
+
 
 	    },
 	     error: function(response) {

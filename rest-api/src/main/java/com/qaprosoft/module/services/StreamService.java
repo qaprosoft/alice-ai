@@ -33,22 +33,11 @@ public class StreamService extends BasicService{
             LOGGER.info(e);
         }
 
-
-//        InputStream inputStream =null;
-//        try {
-//            inputStream = new FileInputStream(file);
-//        } catch (FileNotFoundException e) {
-//            LOGGER.info(e);
-//        }
-
-//        String response ="";
-//
-//        try {
-//            while (inputStream.available()>0)
-//                response+=(char)inputStream.read();
-//        } catch (IOException e) {
-//            LOGGER.info(e);
-//        }
+        try {
+            fin.close();
+        } catch (IOException e) {
+            LOGGER.info(e);
+        }
 
         return response;
     }
@@ -62,10 +51,6 @@ public class StreamService extends BasicService{
         }
         return null;
     }
-
-
-
-
 
 
 
@@ -116,6 +101,16 @@ public class StreamService extends BasicService{
                 fos.write(buf, 0, n);
             }
 
+        } catch (IOException e) {
+            LOGGER.info(e);
+        }
+
+        try {
+            fos.flush();
+            out.flush();
+            in.close();
+            out.close();
+            fos.close();
         } catch (IOException e) {
             LOGGER.info(e);
         }
