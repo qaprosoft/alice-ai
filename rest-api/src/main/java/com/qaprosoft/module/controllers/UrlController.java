@@ -25,19 +25,20 @@ public class UrlController
 	@RequestMapping(value = "/downloadXML", method = RequestMethod.POST,produces = MediaType.TEXT_XML_VALUE)
 	public @ResponseBody String uploadXML(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
 												 @RequestParam("responseType") String type) throws IOException, InterruptedException {
+
 		String tmpPath = StreamService.getPathTempFolder();
 		String path = StreamService.saveImage(file, tmpPath);
-
 		try {
 
 			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
-
 		String response = StreamService.getStringFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
+		System.out.println(response);
 		StreamService.deleteTempFolder(tmpPath);
 		return response;
+
 	}
 
 
@@ -56,6 +57,7 @@ public class UrlController
 		}
 
 		String response = StreamService.getStringFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
+		System.out.println(response);
 		StreamService.deleteTempFolder(tmpPath);
 		return response;
 	}
@@ -76,6 +78,7 @@ public class UrlController
 		}
 
 		InputStream in = StreamService.getIputStreamFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
+
 		StreamService.deleteTempFolder(tmpPath);
 		return IOUtils.toByteArray(in);
 	}
