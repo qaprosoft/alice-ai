@@ -11,80 +11,78 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 
 
-
 @Controller
 @CrossOrigin
-public class UrlController
-{
+public class UrlController {
 
-	private static final Logger LOGGER = Logger.getLogger(UrlController.class);
-
-
-	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/downloadXML", method = RequestMethod.POST,produces = MediaType.TEXT_XML_VALUE)
-	public @ResponseBody String uploadXML(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
-												 @RequestParam("responseType") String type) throws IOException, InterruptedException {
-		String tmpPath = StreamService.getPathTempFolder();
-		String path = StreamService.saveImage(file, tmpPath);
-
-		try {
-
-			PythonScriptService.exeсutePythonScriptWithArguments(model, StreamService.getParentPath(path),type);
-		} catch (IOException e) {
-			LOGGER.info("Can't get response!");
-		}
-
-		String response = StreamService.getStringFromFile(tmpPath + "/out/" + StreamService.getPrefixWithDot(file.getOriginalFilename()) + type);
-
-		StreamService.deleteTempFolder(tmpPath);
-		return response;
-	}
+    private static final Logger LOGGER = Logger.getLogger(UrlController.class);
 
 
-	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/downloadJSON", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String uploadJSON(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
-												 @RequestParam("responseType") String type) throws IOException {
-		String tmpPath = StreamService.getPathTempFolder();
-		String path = StreamService.saveImage(file, tmpPath);
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/downloadXML", method = RequestMethod.POST, produces = MediaType.TEXT_XML_VALUE)
+    public @ResponseBody
+    String uploadXML(@RequestParam("file") MultipartFile file, @RequestParam("name") String model,
+                     @RequestParam("responseType") String type) throws IOException, InterruptedException {
+        String tmpPath = StreamService.getPathTempFolder();
+        String path = StreamService.saveImage(file, tmpPath);
 
-		try {
+        try {
 
-			PythonScriptService.exeсutePythonScriptWithArguments(model, StreamService.getParentPath(path),type);
-		} catch (IOException e) {
-			LOGGER.info("Can't get response!");
-		}
+            PythonScriptService.exeсutePythonScriptWithArguments(model, StreamService.getParentPath(path), type);
+        } catch (IOException e) {
+            LOGGER.info("Can't get response!");
+        }
 
-		String response = StreamService.getStringFromFile(tmpPath + "/out/" + StreamService.getPrefixWithDot(file.getOriginalFilename()) + type);
-		StreamService.deleteTempFolder(tmpPath);
+        String response = StreamService.getStringFromFile(tmpPath + "/out/" + StreamService.getPrefixWithDot(file.getOriginalFilename()) + type);
 
-		return response;
-	}
-
-
-	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/downloadImage", method = RequestMethod.POST)
-	public @ResponseBody String uploadImage(@RequestParam("file") MultipartFile file, @RequestParam ("name") String model,
-									   @RequestParam("responseType") String type) throws IOException {
-
-		String tmpPath = StreamService.getPathTempFolder();
-		String path = StreamService.saveImage(file, tmpPath);
-
-		try {
-
-			PythonScriptService.exeсutePythonScriptWithArguments(model, StreamService.getParentPath(path),type);
-		} catch (IOException e) {
-			LOGGER.info("Can't get response!");
-		}
-		String encodedImage = StreamService.getIputStreamFromFile(tmpPath + "/out/" + file.getOriginalFilename());
-		StreamService.deleteTempFolder(tmpPath);
-
-		return encodedImage;
-
-	}
+        StreamService.deleteTempFolder(tmpPath);
+        return response;
+    }
 
 
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/downloadJSON", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    String uploadJSON(@RequestParam("file") MultipartFile file, @RequestParam("name") String model,
+                      @RequestParam("responseType") String type) throws IOException {
+        String tmpPath = StreamService.getPathTempFolder();
+        String path = StreamService.saveImage(file, tmpPath);
 
+        try {
+
+            PythonScriptService.exeсutePythonScriptWithArguments(model, StreamService.getParentPath(path), type);
+        } catch (IOException e) {
+            LOGGER.info("Can't get response!");
+        }
+
+        String response = StreamService.getStringFromFile(tmpPath + "/out/" + StreamService.getPrefixWithDot(file.getOriginalFilename()) + type);
+        StreamService.deleteTempFolder(tmpPath);
+
+        return response;
+    }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/downloadImage", method = RequestMethod.POST)
+    public @ResponseBody
+    String uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("name") String model,
+                       @RequestParam("responseType") String type) throws IOException {
+
+        String tmpPath = StreamService.getPathTempFolder();
+        String path = StreamService.saveImage(file, tmpPath);
+
+        try {
+
+            PythonScriptService.exeсutePythonScriptWithArguments(model, StreamService.getParentPath(path), type);
+        } catch (IOException e) {
+            LOGGER.info("Can't get response!");
+        }
+        String encodedImage = StreamService.getIputStreamFromFile(tmpPath + "/out/" + file.getOriginalFilename());
+        StreamService.deleteTempFolder(tmpPath);
+
+        return encodedImage;
+
+    }
 
 
 }
