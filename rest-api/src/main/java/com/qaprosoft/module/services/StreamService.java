@@ -1,10 +1,8 @@
 package com.qaprosoft.module.services;
 
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import java.util.Base64;
 import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.UUID;
 
@@ -47,21 +45,46 @@ public class StreamService extends BasicService{
     public static String getIputStreamFromFile(String path){
         File file  =new File(path);
 
-        BufferedImage image = null;
+
+
+
+        String encodedfile = null;
         try {
-            image = ImageIO.read(file);
-        } catch (IOException e) {
-            LOGGER.info(e);
-        }
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(image, getPostfixWithoutDot(path), baos);
+            FileInputStream fileInputStreamReader = new FileInputStream(file);
+            byte[] bytes = new byte[(int)file.length()];
+            fileInputStreamReader.read(bytes);
+            encodedfile = new String(Base64.getEncoder().encode(bytes), "UTF-8");
+
+
+        } catch (FileNotFoundException e) {
+          LOGGER.info(e);
         } catch (IOException e) {
             LOGGER.info(e);
         }
 
-        String encodedImage = Base64.encode(baos.toByteArray());
-        return encodedImage;
+
+        return encodedfile;
+
+
+
+
+//        BufferedImage image = null;
+//        try {
+//            image = ImageIO.read(file);
+//        } catch (IOException e) {
+//            LOGGER.info(e);
+//        }
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        String postfix = getPostfixWithoutDot(path);
+//
+//        try {
+//            ImageIO.write(image, postfix, baos);
+//        } catch (IOException e) {
+//            LOGGER.info(e);
+//        }
+//
+//        String encodedImage = Base64.encode(baos.toByteArray());
+//        return encodedImage;
     }
 
 

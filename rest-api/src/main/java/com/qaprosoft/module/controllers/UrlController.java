@@ -2,9 +2,7 @@ package com.qaprosoft.module.controllers;
 
 import com.qaprosoft.module.services.PythonScriptService;
 import com.qaprosoft.module.services.StreamService;
-
 import org.apache.log4j.Logger;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -82,15 +80,6 @@ public class UrlController
 		return encodedImage;
 
 	}
-
-
-
-
-
-
-
-
-
 
 
 	private static String getParentPath(String absolutePath){
