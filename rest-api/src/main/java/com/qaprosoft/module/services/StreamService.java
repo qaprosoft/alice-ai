@@ -63,29 +63,7 @@ public class StreamService extends BasicService{
             LOGGER.info(e);
         }
 
-
         return encodedfile;
-
-
-
-
-//        BufferedImage image = null;
-//        try {
-//            image = ImageIO.read(file);
-//        } catch (IOException e) {
-//            LOGGER.info(e);
-//        }
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        String postfix = getPostfixWithoutDot(path);
-//
-//        try {
-//            ImageIO.write(image, postfix, baos);
-//        } catch (IOException e) {
-//            LOGGER.info(e);
-//        }
-//
-//        String encodedImage = Base64.encode(baos.toByteArray());
-//        return encodedImage;
     }
 
 

@@ -7,7 +7,7 @@
 <body>
 <div align="center">
     <form method="POST" action="/download" enctype="multipart/form-data" id="fileUploadForm">
-        <h2>File to upload: <input  id="browse" type="file"  name="file" accept="image/jpeg,image/png,image/gif"  onclick="resetText();"></h2>
+        <h2>File to upload: <input  id="browse" type="file"  name="file" accept="image/jpeg,image/png,image/gif"  onclick="resetText();" onchange="AlertFilesize();" ></h2>
         <h2>Model: <input type="text" name="name" value="default"></h2>
         <div>
             <h2>Output type :</h2>
