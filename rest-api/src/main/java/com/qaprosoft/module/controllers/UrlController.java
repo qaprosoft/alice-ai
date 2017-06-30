@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
-import java.nio.file.Paths;
+
 
 
 @Controller
@@ -29,11 +29,13 @@ public class UrlController
 
 		try {
 
-			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
+			PythonScriptService.exeсutePythonScriptWithArguments(model, StreamService.getParentPath(path),type);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
-		String response = StreamService.getStringFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
+
+		String response = StreamService.getStringFromFile(tmpPath + "/out/" + StreamService.getPrefixWithDot(file.getOriginalFilename()) + type);
+
 		StreamService.deleteTempFolder(tmpPath);
 		return response;
 	}
@@ -48,12 +50,12 @@ public class UrlController
 
 		try {
 
-			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
+			PythonScriptService.exeсutePythonScriptWithArguments(model, StreamService.getParentPath(path),type);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
 
-		String response = StreamService.getStringFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
+		String response = StreamService.getStringFromFile(tmpPath + "/out/" + StreamService.getPrefixWithDot(file.getOriginalFilename()) + type);
 		StreamService.deleteTempFolder(tmpPath);
 
 		return response;
@@ -70,11 +72,11 @@ public class UrlController
 
 		try {
 
-			PythonScriptService.exeсutePythonScriptWithArguments(model,getParentPath(path),type);
+			PythonScriptService.exeсutePythonScriptWithArguments(model, StreamService.getParentPath(path),type);
 		} catch (IOException e) {
 			LOGGER.info("Can't get response!");
 		}
-		String encodedImage = StreamService.getIputStreamFromFile(tmpPath + "/out/" + getPrefixWithDot(file.getOriginalFilename()) + type);
+		String encodedImage = StreamService.getIputStreamFromFile(tmpPath + "/out/" + file.getOriginalFilename());
 		StreamService.deleteTempFolder(tmpPath);
 
 		return encodedImage;
@@ -82,12 +84,7 @@ public class UrlController
 	}
 
 
-	private static String getParentPath(String absolutePath){
-		return  Paths.get(absolutePath).getParent().toString();
-	}
 
-	private static String getPrefixWithDot(String str){
-		return str.substring(0,str.lastIndexOf(".")+1);
-	}
+
 
 }

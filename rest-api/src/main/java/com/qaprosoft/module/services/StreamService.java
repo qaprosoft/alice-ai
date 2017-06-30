@@ -1,5 +1,6 @@
 package com.qaprosoft.module.services;
 
+import java.nio.file.Paths;
 import java.util.Base64;
 import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
@@ -155,18 +156,24 @@ public class StreamService extends BasicService{
 
 
 
-    private static String getPostfix(String str){
+    public static String getPostfix(String str){
     return str.substring(str.lastIndexOf("."),str.length());
     }
 
-    private static String getPostfixWithoutDot(String str){
+    public static String getPostfixWithoutDot(String str){
         return str.substring(str.lastIndexOf(".")+1,str.length());
     }
 
 
-    private static String getPrefix(String str){
+    public static String getPrefix(String str){
         return str.substring(0,str.lastIndexOf("."));
     }
+
+
+    public static String getPrefixWithDot(String str){
+        return str.substring(0,str.lastIndexOf(".")+1);
+    }
+
 
 
     public static String getPathTempFolder(){
@@ -184,6 +191,9 @@ public class StreamService extends BasicService{
 
 
 
+    public static String getParentPath(String absolutePath){
+        return  Paths.get(absolutePath).getParent().toString();
+    }
 }
 
 
