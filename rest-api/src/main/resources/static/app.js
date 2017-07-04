@@ -2,6 +2,8 @@ var host = "54.245.105.12:8080";
 //var host = "localhost:8080";
 
 function downloadFile(){
+
+$('#loader').show();
  var radio = $('input[name=responseType]:checked').val();
 if (radio == 'xml') {
     downloadFileXML();
@@ -38,9 +40,10 @@ $.ajax({
 	    var curtain = document.getElementById("curtain");
                    curtain.style.display = 'block';
                    curtain.innerHTML= "<h1>All is ok!</h1>" ;
-
+                    $('#loader').hide();
 	    },
 	     error: function(response) {
+	            $('#loader').hide();
                 var curtain = document.getElementById("curtain");
                    curtain.style.display = 'block';
                    curtain.innerHTML= "<h1>Can't get data! </h1>" ;
@@ -61,8 +64,10 @@ $.ajax({
 	    var curtain = document.getElementById("curtain");
                    curtain.style.display = 'block';
                    curtain.innerHTML= "<h1>All is ok! </h1>" ;
+                   $('#loader').hide();
 	    },
 	     error: function(response) {
+	            $('#loader').hide();
                 var curtain = document.getElementById("curtain");
                    curtain.style.display = 'block';
                    curtain.innerHTML= "<h1>Can't get data! </h1>" ;
@@ -80,18 +85,20 @@ $.ajax({
         contentType: false,
         cache: false,
 	    success: function(data) {
+	     $('#loader').hide();
 	    var curtain = document.getElementById("curtain");
                    curtain.style.display = 'block';
                    curtain.innerHTML= "<h1>Output Image</h1>" ;
-
         document.getElementById("ItemPreview").src = "data:image/jpg;base64," + data;
         document.getElementById("ItemPreview").style.display = 'block';
 	    },
 	     error: function(response) {
+	            $('#loader').hide();
                 var curtain = document.getElementById("curtain");
                    curtain.style.display = 'block';
                    curtain.innerHTML= "<h1>Can't get data! </h1>" ;
         }
+
 	})
 }
 
