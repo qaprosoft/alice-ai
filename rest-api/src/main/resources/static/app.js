@@ -9,8 +9,9 @@ if (radio == 'xml') {
 if (radio == 'json') {
     downloadFileJSON();
 }else
-downloadFileImage();
-
+if (radio == 'img') {
+    downloadFileImage();
+}
 }
 
 
@@ -18,6 +19,8 @@ function resetText(){
 var curtain = document.getElementById("curtain");
 curtain.innerHTML= "<h1></h1>" ;
 curtain.style.display = 'none';
+
+document.getElementById("ItemPreview").style.display = 'none';
  }
 
 
@@ -58,7 +61,6 @@ $.ajax({
 	    var curtain = document.getElementById("curtain");
                    curtain.style.display = 'block';
                    curtain.innerHTML= "<h1>All is ok! </h1>" ;
-
 	    },
 	     error: function(response) {
                 var curtain = document.getElementById("curtain");
@@ -80,12 +82,10 @@ $.ajax({
 	    success: function(data) {
 	    var curtain = document.getElementById("curtain");
                    curtain.style.display = 'block';
-                   curtain.innerHTML= "<h1>All is ok! </h1>" ;
+                   curtain.innerHTML= "<h1>Output Image</h1>" ;
 
-
-
-
-
+        document.getElementById("ItemPreview").src = "data:image/jpg;base64," + data;
+        document.getElementById("ItemPreview").style.display = 'block';
 	    },
 	     error: function(response) {
                 var curtain = document.getElementById("curtain");
@@ -94,3 +94,27 @@ $.ajax({
         }
 	})
 }
+
+
+function AlertFilesize(){
+
+    if(window.ActiveXObject){
+        var fso = new ActiveXObject("Scripting.FileSystemObject");
+        var filepath = document.getElementById('browse').value;
+        var thefile = fso.getFile(filepath);
+        var sizeinbytes = thefile.size;
+    }else{
+        var sizeinbytes = document.getElementById('browse').files[0].size;
+    }
+
+    var fSExt = new Array('Bytes', 'KB', 'MB', 'GB');
+    fSize = sizeinbytes; i=0;while(fSize>900){fSize/=1024;i++;}
+
+       var size = (Math.round(fSize*100)/100)+' '+fSExt[i];
+
+    if ((fSExt[i]=="MB" || fSExt[i]=="GB" ) && ((Math.round(fSize*100)/100)>10)) {
+    alert ( "File is very large! Change another file!");
+    document.getElementById("browse").value='';
+    }
+}
+
