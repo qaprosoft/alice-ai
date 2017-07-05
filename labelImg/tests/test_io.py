@@ -12,9 +12,9 @@ from pascal_voc_io import PascalVocReader
 # Test Write/Read
 writer = PascalVocWriter('tests', 'test', (512, 512, 1), localImgPath='tests/test.bmp')
 difficult = 1
-checkbox = 1
-writer.addBndBox(60, 40, 430, 504, 'person', difficult, checkbox)
-writer.addBndBox(113, 40, 450, 403, 'face', difficult, checkbox)
+checked = 1
+writer.addBndBox(60, 40, 430, 504, 'person', difficult, checked)
+writer.addBndBox(113, 40, 450, 403, 'face', difficult, checked)
 writer.save('tests/test.xml')
 
 reader = PascalVocReader('tests/test.xml')

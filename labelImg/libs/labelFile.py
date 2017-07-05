@@ -49,9 +49,9 @@ class LabelFile(object):
             label = shape['label']
             # Add Chris
             difficult = int(shape['difficult'])
-            checkbox = int(shape['checkbox'])
+            checked = int(shape['checked'])
             bndbox = LabelFile.convertPoints2BndBox(points)
-            writer.addBndBox(bndbox[0], bndbox[1], bndbox[2], bndbox[3], label, difficult, checkbox)
+            writer.addBndBox(bndbox[0], bndbox[1], bndbox[2], bndbox[3], label, difficult, checked)
 
         writer.save(targetFile=filename)
         return

@@ -1,5 +1,5 @@
-dog
-person
-cat
-tv
-car
+button
+text_field
+select
+checkbot
+radio

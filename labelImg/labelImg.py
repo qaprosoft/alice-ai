@@ -133,10 +133,10 @@ class MainWindow(QMainWindow, WindowMixin):
         self.diffcButton = QCheckBox(u'difficult')
         self.diffcButton.setChecked(False)
         self.diffcButton.stateChanged.connect(self.btnstate)
-        # Create a widget for edit and checkbox button
-        self.checkboxButton = QCheckBox(u'checkbox')
-        self.checkboxButton.setChecked(False)
-        self.checkboxButton.stateChanged.connect(self.btnstate)
+        # Create a widget for edit and checked property
+        self.checkedButton = QCheckBox(u'checked')
+        self.checkedButton.setChecked(False)
+        self.checkedButton.stateChanged.connect(self.btnstate)
 
         self.editButton = QToolButton()
         self.editButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -144,7 +144,7 @@ class MainWindow(QMainWindow, WindowMixin):
         # Add some of widgets to listLayout 
         listLayout.addWidget(self.editButton)
         listLayout.addWidget(self.diffcButton)
-        listLayout.addWidget(self.checkboxButton)
+        listLayout.addWidget(self.checkedButton)
         listLayout.addWidget(useDefautLabelContainer)
 
         # Create and add a widget for showing current label items
@@ -392,7 +392,7 @@ class MainWindow(QMainWindow, WindowMixin):
         # Add Chris
         self.difficult = False
 
-        self.checkbox = False
+        self.checked = False
 
         # Load predefined classes to the list
         self.loadPredefinedClasses(defaultPrefdefClassFile)
@@ -452,7 +452,7 @@ class MainWindow(QMainWindow, WindowMixin):
         Shape.fill_color = self.fillColor
         # Add chris
         Shape.difficult = self.difficult
-        Shape.checkbox = self.checkbox
+        Shape.checked = self.checked
 
         def xbool(x):
             if isinstance(x, QVariant):
@@ -643,7 +643,7 @@ class MainWindow(QMainWindow, WindowMixin):
             item = self.labelList.item(self.labelList.count()-1)
 
         difficult = self.diffcButton.isChecked()
-        checkbox = self.checkboxButton.isChecked()
+        checked = self.checkedButton.isChecked()
 
         try:
             shape = self.itemsToShapes[item]
@@ -660,8 +660,8 @@ class MainWindow(QMainWindow, WindowMixin):
             pass
         # Checked and Update
         try:
-            if checkbox != shape.checkbox:
-                shape.checkbox = checkbox
+            if checked != shape.checked:
+                shape.checked = checked
                 self.setDirty()
             else:  # User probably changed item visibility
                 self.canvas.setShapeVisible(shape, item.checkState() == Qt.Checked)
@@ -706,12 +706,12 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def loadLabels(self, shapes):
         s = []
-        for label, points, line_color, fill_color, difficult, checkbox in shapes:
+        for label, points, line_color, fill_color, difficult, checked in shapes:
             shape = Shape(label=label)
             for x, y in points:
                 shape.addPoint(QPointF(x, y))
             shape.difficult = difficult
-            shape.checkbox = checkbox
+            shape.checked = checked
             shape.close()
             s.append(shape)
             self.addLabel(shape)
@@ -738,7 +738,7 @@ class MainWindow(QMainWindow, WindowMixin):
                         points=[(p.x(), p.y()) for p in s.points],
                        # add chris
                         difficult = s.difficult,
-			checkbox = s.checkbox)
+			checked = s.checked)
 
         shapes = [format_shape(shape) for shape in self.canvas.shapes]
         # Can add differrent annotation formats here
@@ -769,7 +769,7 @@ class MainWindow(QMainWindow, WindowMixin):
             shape = self.itemsToShapes[item]
             # Add Chris
             self.diffcButton.setChecked(shape.difficult)
-            self.checkboxButton.setChecked(shape.checkbox)
+            self.checkedButton.setChecked(shape.checked)
 
     def labelItemChanged(self, item):
         shape = self.itemsToShapes[item]
@@ -797,7 +797,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # Add Chris
         self.diffcButton.setChecked(False)
-        self.checkboxButton.setChecked(False)
+        self.checkedButton.setChecked(False)
         if text is not None:
             self.prevLabelText = text
             self.addLabel(self.canvas.setLastLabel(text))
