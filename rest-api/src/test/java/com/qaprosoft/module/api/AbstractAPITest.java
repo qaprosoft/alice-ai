@@ -14,7 +14,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.testng.log4testng.Logger;
 import java.io.*;
-import java.util.Base64;
+
 
 
 public abstract class AbstractAPITest extends APITest {
