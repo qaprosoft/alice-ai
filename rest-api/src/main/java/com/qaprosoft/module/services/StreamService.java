@@ -2,10 +2,8 @@ package com.qaprosoft.module.services;
 
 import java.nio.file.Paths;
 import java.util.Base64;
-
 import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.*;
 import java.util.UUID;
 

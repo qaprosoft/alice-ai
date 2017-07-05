@@ -2,6 +2,8 @@ var host = "54.245.105.12:8080";
 //var host = "localhost:8080";
 
 function downloadFile(){
+
+$('#loader').show();
  var radio = $('input[name=responseType]:checked').val();
 if (radio == 'xml') {
     downloadFileXML();
@@ -19,7 +21,6 @@ function resetText(){
 var curtain = document.getElementById("curtain");
 curtain.innerHTML= "<h1></h1>" ;
 curtain.style.display = 'none';
-
 document.getElementById("ItemPreview").style.display = 'none';
  }
 
@@ -35,15 +36,16 @@ $.ajax({
         contentType: false,
         cache: false,
 	    success: function(response) {
+	    $('#loader').hide();
 	    var curtain = document.getElementById("curtain");
-                   curtain.style.display = 'block';
-                   curtain.innerHTML= "<h1>All is ok!</h1>" ;
-
+        curtain.style.display = 'block';
+        curtain.innerHTML= "<h1>All is ok!</h1>" ;
 	    },
-	     error: function(response) {
-                var curtain = document.getElementById("curtain");
-                   curtain.style.display = 'block';
-                   curtain.innerHTML= "<h1>Can't get data! </h1>" ;
+	    error: function(response) {
+	    $('#loader').hide();
+        var curtain = document.getElementById("curtain");
+        curtain.style.display = 'block';
+        curtain.innerHTML= "<h1>Can't get data! </h1>" ;
         }
 	})
 }
@@ -58,14 +60,16 @@ $.ajax({
         contentType: false,
         cache: false,
 	    success: function(response) {
+	    $('#loader').hide();
 	    var curtain = document.getElementById("curtain");
-                   curtain.style.display = 'block';
-                   curtain.innerHTML= "<h1>All is ok! </h1>" ;
+        curtain.style.display = 'block';
+        curtain.innerHTML= "<h1>All is ok! </h1>" ;
 	    },
 	     error: function(response) {
-                var curtain = document.getElementById("curtain");
-                   curtain.style.display = 'block';
-                   curtain.innerHTML= "<h1>Can't get data! </h1>" ;
+	     $('#loader').hide();
+         var curtain = document.getElementById("curtain");
+         curtain.style.display = 'block';
+         curtain.innerHTML= "<h1>Can't get data! </h1>" ;
         }
 	})
 }
@@ -80,18 +84,20 @@ $.ajax({
         contentType: false,
         cache: false,
 	    success: function(data) {
+	    $('#loader').hide();
 	    var curtain = document.getElementById("curtain");
-                   curtain.style.display = 'block';
-                   curtain.innerHTML= "<h1>Output Image</h1>" ;
-
+        curtain.style.display = 'block';
+        curtain.innerHTML= "<h1>Output Image</h1>" ;
         document.getElementById("ItemPreview").src = "data:image/jpg;base64," + data;
         document.getElementById("ItemPreview").style.display = 'block';
 	    },
-	     error: function(response) {
-                var curtain = document.getElementById("curtain");
-                   curtain.style.display = 'block';
-                   curtain.innerHTML= "<h1>Can't get data! </h1>" ;
+	    error: function(response) {
+	    $('#loader').hide();
+        var curtain = document.getElementById("curtain");
+        curtain.style.display = 'block';
+        curtain.innerHTML= "<h1>Can't get data! </h1>" ;
         }
+
 	})
 }
 
@@ -110,7 +116,7 @@ function AlertFilesize(){
     var fSExt = new Array('Bytes', 'KB', 'MB', 'GB');
     fSize = sizeinbytes; i=0;while(fSize>900){fSize/=1024;i++;}
 
-       var size = (Math.round(fSize*100)/100)+' '+fSExt[i];
+       var size = (Math.round(fSize*100)/100)+' ' + fSExt[i];
 
     if ((fSExt[i]=="MB" || fSExt[i]=="GB" ) && ((Math.round(fSize*100)/100)>10)) {
     alert ( "File is very large! Change another file!");
