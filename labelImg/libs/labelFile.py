@@ -40,7 +40,7 @@ class LabelFile(object):
         image.load(imagePath)
         imageShape = [image.height(), image.width(),
                       1 if image.isGrayscale() else 3]
-        writer = PascalVocWriter(imgFolderName, imgFileNameWithoutExt,
+        writer = PascalVocWriter(imgFolderName, imgFileName,
                                  imageShape, localImgPath=imagePath)
         writer.verified = self.verified
 
