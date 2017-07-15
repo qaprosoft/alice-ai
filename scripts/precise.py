@@ -473,7 +473,7 @@ def IOU(coord_pred, coord_gt):
 ann_folder = args.truth
 dumps_xml = {}
 #print "XML parsing started..."
-for file in glob.glob(ann_folder + '/' + '*.xml'):
+for file in glob.glob(ann_folder + '/' + '*.xml', recursive=True):
     annotation_file = open(file)
     tree = ET.parse(annotation_file)
     root = tree.getroot()
@@ -503,7 +503,7 @@ for file in glob.glob(ann_folder + '/' + '*.xml'):
 json_folder = args.predicted
 dumps_json = {}
 #print "JSON parsing started..."
-for file in glob.glob(json_folder + '/' + '*.json'):
+for file in glob.glob(json_folder + '/' + '*.json', recursive=True):
     try:
         config = json.loads(codecs.open(file, "r", encoding='utf-8', errors='ignore').read())
     except ValueError:
