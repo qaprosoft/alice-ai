@@ -13,7 +13,7 @@ help_string = "recognize.py"
 # values of the dict -> [load, gpu, cfg]
 models = {
     "mlb":[7600, 0.9, "tiny-ai-weights"],
-    "default":[129650, 0.9, "tiny-ai-weights-lc-mlb"]
+    "default":[-1, 0.9, "tiny-ai-weights-lc-mlb"]
 }
 
 parser = argparse.ArgumentParser(help_string)
@@ -45,9 +45,9 @@ model_path = "/home/ubuntu/darkflow/flow"
 print "model_path: " + model_path
 
 # One script screates json, the other  - images with bounding boxes
-generate_json = "{} --test {} --load {} --model /home/ubuntu/darkflow/cfg/{}.cfg --json".format(model_path, FOLDER, load, model_name)
+generate_json = "{} --test {} --backup /home/ubuntu/darkflow/ckpt/mlb_branch/ --load {} --model /home/ubuntu/darkflow/cfg/{}.cfg --json".format(model_path, FOLDER, load, model_name)
 print generate_json
-generate_img = "{} --test {} --load {} --model /home/ubuntu/darkflow/cfg/{}.cfg".format(model_path, FOLDER, load, model_name)
+generate_img = "{} --test {} --backup /home/ubuntu/darkflow/ckpt/mlb_branch/ --load {} --model /home/ubuntu/darkflow/cfg/{}.cfg".format(model_path, FOLDER, load, model_name)
 print generate_img
 generate_xml = "python to_xml_output.py --json " + FOLDER + "/out/ --save " + FOLDER + "/out/"
 print generate_xml
