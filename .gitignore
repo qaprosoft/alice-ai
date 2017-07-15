@@ -2,4 +2,11 @@
 .idea
 module.iml
 alice-ai.pem
-recognize.py
+rest-api/target
+rest-api/.classpath
+rest-api/.project
+rest-api/.settings/org.eclipse.jdt.core.prefs
+data
+logs
+reports
+scripts/ckpt
