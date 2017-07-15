@@ -673,4 +673,4 @@ if bool_iou:
     print "IOU_mAP = {}".format(IOU_mAP)
 
 if not (bool_iou or bool_center):
-    print "You didn't set any flag. Run precision_quality.py -h for more information"
+    print "You didn't set any flag. Run precise.py -h for more information"
