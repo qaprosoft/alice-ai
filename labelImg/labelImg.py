@@ -298,8 +298,8 @@ class MainWindow(QMainWindow, WindowMixin):
             self.MANUAL_ZOOM: lambda: 1,
         }
 
-        edit = action('&Edit Label', self.editLabel,
-                      'Ctrl+E', 'edit', u'Modify the label of the selected Box',
+        edit = action('&Edit Element', self.editLabel,
+                      'Ctrl+E', 'edit', u'Modify the element metadata',
                       enabled=False)
         self.editButton.setDefaultAction(edit)
 
