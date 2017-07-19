@@ -1,6 +1,1 @@
-button
-checkbox
-text_field
-radio
-select
-date_picker
+/home/ubuntu/darkflow/labels.txt

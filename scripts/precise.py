@@ -117,6 +117,7 @@ def find_intersection_square(predicted, true):
     dy = min(ymax_predicted, ymax_true) - max(ymin_predicted, ymin_true)
 
     if (dx>=0) and (dy>=0):
+        print "dx*dy = ".format(dx*dy)
         return dx*dy
 
 def find_square(coordinates):
@@ -141,8 +142,8 @@ def IOU(predicted, true):
     sum_of_squares = pred_square+gt_square
 
     intersection = find_intersection_square(predicted, true)
-    union = sum_of_squares - intersection[0]
-    return float(intersection[0])/union
+    union = sum_of_squares - intersection
+    return float(intersection)/union
 
 def get_list_of_classes(filename):
     return open(filename).read().splitlines()
@@ -158,6 +159,7 @@ def get_class_measures_dict(classes):
 # Parse xml annotations
 ann_folder = args.truth
 dumps_xml = {}
+
 for file in glob.glob(ann_folder + '/' + '*.xml'):
     annotation_file = open(file)
     tree = ET.parse(annotation_file)
@@ -204,97 +206,76 @@ classes = get_list_of_classes(args.labels)
 class_measures_dict = get_class_measures_dict(classes)
 
 #Intersection over union IOU
-"""
-threshold = args.threshold
-for predicted_coordinate in dumps_json.keys():
-    for actual_metadata in dumps_xml.keys():
-        #compare objects only from the same file
-        if predicted_coordinate[0] == actual_metadata[0]:
-            iou_value = IOU(coord_gt = actual_metadata, coord_pred = predicted_coordinate)
-            if iou_value > threshold:
-                # 1 - label/name of element
-                #TODO: improve measurement data structures to be able to support scalable classes (up to 10K)
-                if predicted_coordinate[1] == actual_metadata[1] == classes[0]:
-                    button_measures[0] += 1
-                elif predicted_metadata[1] == actual_metadata[1] == classes[1]:
-                    checkbox_measures[0] += 1
-                elif predicted_metadata[1] == actual_metadata[1] == classes[2]:
-                    date_picker_measures[0] += 1
-                elif predicted_metadata[1] == actual_metadata[1] == classes[3]:
-                    radio_measures[0] += 1
-                elif predicted_metadata[1] == actual_metadata[1] == classes[4]:
-                    text_field_measures[0] += 1
-                elif predicted_metadata[1] == actual_metadata[1] == classes[5]:
-                    select_measures[0] += 1
-                else:
-                    class_list_dict[actual_metadata[1]][1] += 1
-            else:
-                class_list_dict[actual_metadata[1]][1] += 1
-
-AP_list = []
-for z in class_list_dict.keys():
-    TP = class_list_dict[z][0]
-    #print "TP - {}".format(TP)
-    FP = class_list_dict[z][1]
-    #print "FP - {}".format(FP)
-    if TP != 0 and FP != 0:
-        AP = float(TP)/(TP+FP)
-        class_list_dict[z].append(AP)
-        AP_list.append(AP)
-IOU_mAP = np.mean(AP_list)
-"""
-
-# mAP with centers
 class_measures_dict = get_class_measures_dict(classes)
 for predicted_coordinate in dumps_json.keys():
     for true_coordinate in dumps_xml.keys():
-
         if predicted_coordinate[0] == true_coordinate[0] and dumps_xml[true_coordinate] == 0:
-            #print "item_j - {}".format(predicted_coordinate)
-            #print "item_x - {}".format(true_coordinate)
-            if isCenterMatch(true_coordinate, predicted_coordinate) == 1:
+            iou_value = IOU(true = true_coordinate, predicted = predicted_coordinate)
+            if iou_value > threshold:
                 dumps_xml[true_coordinate] = 1
                 dumps_json[predicted_coordinate] = 1
-
                 # filling class measures
                 for class_ in classes:
                     if true_coordinate[1] == predicted_coordinate[1]:
                         if true_coordinate[1] == class_:
-                            #print class_measures_dict
-                            #print "TP += 1"
-                            #print class_
                             class_measures_dict[class_][0] += 1
-                            #print class_measures_dict
                             break
                     else:
-                        #print class_measures_dict
-                        #print "FP += 1"
-                        #print class_
                         class_measures_dict[class_][1] += 1
-                        #print class_measures_dict
-
 
 for key in dumps_json.keys():
     if dumps_json[key] == 0: # key - (filename, label, xmin, ymin, xmax, ymax)
-        #print "here"
         label = key[1]
         class_measures_dict[label][2] += 1
 
 for key in dumps_xml.keys():
     if dumps_xml[key] == 0: # key - (filename, label, xmin, ymin, xmax, ymax)
-        #print "here1"
         label = key[1]
         class_measures_dict[label][2] += 1
 
 AP_list = []
 for class_ in classes:
-    #print class_measures_dict[class_]
     TP = class_measures_dict[class_][0]
     FP = class_measures_dict[class_][1]
     TN = class_measures_dict[class_][2]
-    #print "TP - {}".format(TP)
-    #print "FP - {}".format(FP)
-    #print "TN - {}".format(TN)
+    if TP != 0 or FP != 0 or TN != 0:
+        AP = float(TP)/(TP+FP+TN)
+        class_measures_dict[class_][3] = AP
+        AP_list.append(AP)
+IOU_mAP = np.mean(AP_list)
+
+# mAP with centers
+class_measures_dict = get_class_measures_dict(classes)
+for predicted_coordinate in dumps_json.keys():
+    for true_coordinate in dumps_xml.keys():
+        if predicted_coordinate[0] == true_coordinate[0] and dumps_xml[true_coordinate] == 0:
+            if isCenterMatch(true_coordinate, predicted_coordinate) == 1:
+                dumps_xml[true_coordinate] = 1
+                dumps_json[predicted_coordinate] = 1
+                # filling class measures
+                for class_ in classes:
+                    if true_coordinate[1] == predicted_coordinate[1]:
+                        if true_coordinate[1] == class_:
+                            class_measures_dict[class_][0] += 1
+                            break
+                    else:
+                        class_measures_dict[class_][1] += 1
+
+for key in dumps_json.keys():
+    if dumps_json[key] == 0: # key - (filename, label, xmin, ymin, xmax, ymax)
+        label = key[1]
+        class_measures_dict[label][2] += 1
+
+for key in dumps_xml.keys():
+    if dumps_xml[key] == 0: # key - (filename, label, xmin, ymin, xmax, ymax)
+        label = key[1]
+        class_measures_dict[label][2] += 1
+
+AP_list = []
+for class_ in classes:
+    TP = class_measures_dict[class_][0]
+    FP = class_measures_dict[class_][1]
+    TN = class_measures_dict[class_][2]
     if TP != 0 or FP != 0 or TN != 0:
         AP = float(TP)/(TP+FP+TN)
         class_measures_dict[class_][3] = AP
