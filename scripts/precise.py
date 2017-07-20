@@ -113,16 +113,17 @@ def find_intersection_square(predicted, true):
     xmax_true = true[4]
     ymax_true = true[5]
 
-    dx = min(xmax_predicted, xmax_true) - max(xmin_predicted, xmin_true)
-    dy = min(ymax_predicted, ymax_true) - max(ymin_predicted, ymin_true)
-
+    dx = abs(min(xmax_predicted, xmax_true) - max(xmin_predicted, xmin_true))
+    #print min(xmax_predicted, xmax_true)
+    dy = abs(min(ymax_predicted, ymax_true) - max(ymin_predicted, ymin_true))
+    #print "dx*dy = {}".format(dx*dy)
     if (dx>=0) and (dy>=0):
-        print "dx*dy = ".format(dx*dy)
+        #print "dx*dy = ".format(dx*dy)
         return dx*dy
 
 def find_square(coordinates):
     """
-        coords - [filename, label,xmin,ymin,xmax,ymax]
+        coordinates - [filename, label,xmin,ymin,xmax,ymax]
         returns square for rectangle with given coordinates (coords)
     """
     xmin = coordinates[2]
@@ -137,9 +138,9 @@ def IOU(predicted, true):
     """
     returns intersection over union for rectangles with given coordinates
     """
-    pred_square = find_square(predicted) #square of predicted box
-    gt_square = find_square(true) # square of ground truth box
-    sum_of_squares = pred_square+gt_square
+    predicted_square = find_square(predicted) #square of predicted box
+    true_square = find_square(true) # square of ground truth box
+    sum_of_squares = predicted_square + true_square
 
     intersection = find_intersection_square(predicted, true)
     union = sum_of_squares - intersection
@@ -203,70 +204,88 @@ for file in glob.glob(json_folder + '/' + '*.json'):
         dumps_json[current] = 0
 
 classes = get_list_of_classes(args.labels)
-class_measures_dict = get_class_measures_dict(classes)
+class_measures_dict_iou = get_class_measures_dict(classes)
 
-#Intersection over union IOU
-class_measures_dict = get_class_measures_dict(classes)
-for predicted_coordinate in dumps_json.keys():
-    for true_coordinate in dumps_xml.keys():
+#Intersection Over Union
+threshold = args.threshold
+class_measures_dict_iou = get_class_measures_dict(classes)
+for predicted_coordinate in dumps_json:
+    for true_coordinate in dumps_xml:
         if predicted_coordinate[0] == true_coordinate[0] and dumps_xml[true_coordinate] == 0:
             iou_value = IOU(true = true_coordinate, predicted = predicted_coordinate)
-            if iou_value > threshold:
-                dumps_xml[true_coordinate] = 1
-                dumps_json[predicted_coordinate] = 1
+            if iou_value >= threshold:
+
                 # filling class measures
                 for class_ in classes:
-                    if true_coordinate[1] == predicted_coordinate[1]:
-                        if true_coordinate[1] == class_:
-                            class_measures_dict[class_][0] += 1
+                    true_label = true_coordinate[1]
+                    predicted_label = predicted_coordinate[1]
+
+                    if true_label == predicted_label:
+                        if true_label == class_:
+                            dumps_xml[true_coordinate] = 1
+                            dumps_json[predicted_coordinate] = 1
+                            class_measures_dict_iou[class_][0] += 1
                             break
                     else:
-                        class_measures_dict[class_][1] += 1
+                        class_measures_dict_iou[predicted_label][1] += 1
+                        break
 
-for key in dumps_json.keys():
+for key in dumps_json:
     if dumps_json[key] == 0: # key - (filename, label, xmin, ymin, xmax, ymax)
         label = key[1]
-        class_measures_dict[label][2] += 1
+        class_measures_dict_iou[label][2] += 1
 
-for key in dumps_xml.keys():
+for key in dumps_xml:
     if dumps_xml[key] == 0: # key - (filename, label, xmin, ymin, xmax, ymax)
         label = key[1]
-        class_measures_dict[label][2] += 1
+        class_measures_dict_iou[label][2] += 1
 
 AP_list = []
 for class_ in classes:
-    TP = class_measures_dict[class_][0]
-    FP = class_measures_dict[class_][1]
-    TN = class_measures_dict[class_][2]
+    TP = class_measures_dict_iou[class_][0]
+    FP = class_measures_dict_iou[class_][1]
+    TN = class_measures_dict_iou[class_][2]
+    #print TP, FP, TN
     if TP != 0 or FP != 0 or TN != 0:
         AP = float(TP)/(TP+FP+TN)
-        class_measures_dict[class_][3] = AP
+        class_measures_dict_iou[class_][3] = AP
         AP_list.append(AP)
 IOU_mAP = np.mean(AP_list)
 
 # mAP with centers
+# making all values equals 0
+for key in dumps_json:
+    dumps_json[key] = 0
+for key in dumps_xml:
+    dumps_xml[key] = 0
+
 class_measures_dict = get_class_measures_dict(classes)
-for predicted_coordinate in dumps_json.keys():
-    for true_coordinate in dumps_xml.keys():
+for predicted_coordinate in dumps_json:
+    for true_coordinate in dumps_xml:
         if predicted_coordinate[0] == true_coordinate[0] and dumps_xml[true_coordinate] == 0:
             if isCenterMatch(true_coordinate, predicted_coordinate) == 1:
-                dumps_xml[true_coordinate] = 1
-                dumps_json[predicted_coordinate] = 1
+
                 # filling class measures
                 for class_ in classes:
-                    if true_coordinate[1] == predicted_coordinate[1]:
-                        if true_coordinate[1] == class_:
+                    true_label = true_coordinate[1]
+                    predicted_label = predicted_coordinate[1]
+
+                    if true_label == predicted_label:
+                        if true_label == class_:
+                            dumps_xml[true_coordinate] = 1
+                            dumps_json[predicted_coordinate] = 1
                             class_measures_dict[class_][0] += 1
                             break
                     else:
-                        class_measures_dict[class_][1] += 1
+                        class_measures_dict[predicted_label][1] += 1
+                        break
 
-for key in dumps_json.keys():
+for key in dumps_json:
     if dumps_json[key] == 0: # key - (filename, label, xmin, ymin, xmax, ymax)
         label = key[1]
         class_measures_dict[label][2] += 1
 
-for key in dumps_xml.keys():
+for key in dumps_xml:
     if dumps_xml[key] == 0: # key - (filename, label, xmin, ymin, xmax, ymax)
         label = key[1]
         class_measures_dict[label][2] += 1
@@ -291,6 +310,9 @@ if bool_center:
         print "{} - {}".format(class_, AP)
 if bool_iou:
     print "IOU_mAP - {}".format(IOU_mAP)
+    for class_ in classes:
+        AP = class_measures_dict_iou[class_][3]
+        print "{} - {}".format(class_, AP)
 
 
 if not (bool_iou or bool_center):
