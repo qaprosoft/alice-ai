@@ -50,37 +50,6 @@ def isCenterMatch(true, predicted):
     else:
         return 0
 
-# TODO: test method with different bounding boxes
-def isIntersects(predicted, true):
-    """
-        predicted - (filename, label, xmin, ymin, xmax, ymax)
-        true - (filename, label, xmin, ymin, xmax, ymax)
-    """
-
-    # predicted coordinates
-    #upLeftPoint
-    xmin_predicted = predicted[2]
-    ymin_predicted = predicted[3]
-    xmax_predicted = predicted[4]
-    ymax_predicted = predicted[5]
-    width_predicted = xmax_predicted - xmin_predicted
-    height_predicted = ymax_predicted - ymin_predicted
-
-    # true coordinates
-    xmin_true = true[2]
-    ymin_true = true[3]
-    xmax_true = true[4]
-    ymax_true = true[5]
-    width_true = xmax_true - xmin_true
-    height_true = ymax_true - ymin_true
-
-    if (xmin_predicted+width_predicted<xmin_true or xmin_true+width_true<xmin_predicted
-                                                or ymin_predicted+height_predicted<ymin_true
-                                                or ymin_true+height_true<ymin_predicted):
-        Intersection = False
-    else:
-        Intersection = True
-
 def isPointInsideRect(point, rectangle):
     """
         defines whether point inside rectangle or not
@@ -143,8 +112,14 @@ def IOU(predicted, true):
     sum_of_squares = predicted_square + true_square
 
     intersection = find_intersection_square(predicted, true)
-    union = sum_of_squares - intersection
-    return float(intersection)/union
+    if intersection != sum_of_squares:
+        union = sum_of_squares - intersection
+        return float(intersection)/union
+    else:
+        warning = "WARNING!\nIntersection = {}\nSum of squares = {}\npredicted box - {}\ntrue box - {}"
+        print warning.format(intersection,
+                            sum_of_squares, predicted, true)
+        return 0
 
 def get_list_of_classes(filename):
     return open(filename).read().splitlines()
