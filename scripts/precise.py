@@ -260,12 +260,14 @@ for predicted_coordinate in dumps_json:
 for key in dumps_json:
     if dumps_json[key] == 0: # key - (filename, label, xmin, ymin, xmax, ymax)
         label = key[1]
-        class_measures_dict[label][2] += 1
+        if label != 'None':
+            class_measures_dict[label][2] += 1
 
 for key in dumps_xml:
     if dumps_xml[key] == 0: # key - (filename, label, xmin, ymin, xmax, ymax)
         label = key[1]
-        class_measures_dict[label][2] += 1
+        if label != 'None':
+            class_measures_dict[label][2] += 1
 
 AP_list = []
 for class_ in classes:
