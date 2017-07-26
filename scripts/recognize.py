@@ -12,8 +12,9 @@ help_string = "recognize.py"
 
 # values of the dict -> [load, gpu, cfg]
 models = {
-    "mlb":[7600, 0.9, "tiny-ai-weights"],
-    "default":[-1, 0.9, "tiny-ai-weights-lc-mlb"]
+    "mlb":[7600, 0.9, "/home/ubuntu/darkflow/ckpt/mlb_branch/", "tiny-ai-weights"],
+    "default":[-1, 0.9, "/home/ubuntu/darkflow/ckpt/mlb_branch/", "tiny-ai-weights-lc-mlb"],
+    "2.0":[-1, 0.9, "/home/ubuntu/darkflow/ckpt/2.0/", "ai-2.0"]
 }
 
 parser = argparse.ArgumentParser(help_string)
@@ -36,7 +37,8 @@ gpu = models[model][1]
 #print "gpu: " + gpu
 load = models[model][0]
 #print "load: " + load
-model_name = models[model][2]
+ckpt_path = models[model][2]
+model_name = models[model][3]
 print "model_name: " + model_name
 print "FOLDER: " + FOLDER
 print "OUTPUT: " + OUTPUT
@@ -45,9 +47,9 @@ model_path = "/home/ubuntu/darkflow/flow"
 print "model_path: " + model_path
 
 # One script screates json, the other  - images with bounding boxes
-generate_json = "{} --test {} --backup /home/ubuntu/darkflow/ckpt/mlb_branch/ --load {} --model /home/ubuntu/darkflow/cfg/{}.cfg --json".format(model_path, FOLDER, load, model_name)
+generate_json = "{} --test {} --backup {} --load {} --model /home/ubuntu/darkflow/cfg/{}.cfg --json".format(model_path, FOLDER, ckpt_path, load, model_name)
 print generate_json
-generate_img = "{} --test {} --backup /home/ubuntu/darkflow/ckpt/mlb_branch/ --load {} --model /home/ubuntu/darkflow/cfg/{}.cfg".format(model_path, FOLDER, load, model_name)
+generate_img = "{} --test {} --backup {} --load {} --model /home/ubuntu/darkflow/cfg/{}.cfg".format(model_path, FOLDER, ckpt_path, load, model_name)
 print generate_img
 generate_xml = "python to_xml_output.py --json " + FOLDER + "/out/ --save " + FOLDER + "/out/"
 print generate_xml
