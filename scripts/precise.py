@@ -12,7 +12,7 @@ parser.add_argument("--truth", default="/home/ubuntu/tools/alice/data/ideal/test
 parser.add_argument("--predicted", default="/home/ubuntu/tools/alice/data/ideal/test/out/test/", help="path to predicted boxes folder")
 parser.add_argument("--threshold", default=0.5, help="threshold for IOU score")
 parser.add_argument("--center", default=True, help="Whether to show Center Score")
-parser.add_argument("--iou", default=False, help="Whether to show IOU Score")
+parser.add_argument("--iou", default=True, help="Whether to show IOU Score")
 parser.add_argument("--labels", default="/home/ubuntu/darkflow/labels.txt", help="path to labels.txt")
 args = parser.parse_args()
 
