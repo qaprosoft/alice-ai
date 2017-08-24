@@ -47,9 +47,9 @@ model_path = "/home/ubuntu/darkflow/flow"
 print "model_path: " + model_path
 
 # One script screates json, the other  - images with bounding boxes
-generate_json = "{} --test {} --backup {} --load {} --model /home/ubuntu/darkflow/cfg/{}.cfg --json".format(model_path, FOLDER, ckpt_path, load, model_name)
+generate_json = "{} --test {} --backup {} --load {} --batch 32 --model /home/ubuntu/darkflow/cfg/{}.cfg --json".format(model_path, FOLDER, ckpt_path, load, model_name)
 print generate_json
-generate_img = "{} --test {} --backup {} --load {} --model /home/ubuntu/darkflow/cfg/{}.cfg".format(model_path, FOLDER, ckpt_path, load, model_name)
+generate_img = "{} --test {} --backup {} --load {} --batch 32 --model /home/ubuntu/darkflow/cfg/{}.cfg".format(model_path, FOLDER, ckpt_path, load, model_name)
 print generate_img
 generate_xml = "python to_xml_output.py --json " + FOLDER + "/out/ --save " + FOLDER + "/out/"
 print generate_xml

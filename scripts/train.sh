@@ -1,4 +1,4 @@
-#!/bin/bash
+#/bin/bash
 
 #export DATA_PATTERN=$1
 ##echo DATA_PATTERN=$DATA_PATTERN

@@ -168,6 +168,8 @@ for file in glob.glob(json_folder + '/' + '*.json'):
         continue
 
     for dictionary in config:
+        if dictionary == None:
+            continue
         label = dictionary["label"]
         xmin = dictionary["topleft"]["x"]
         ymin = dictionary["topleft"]["y"]

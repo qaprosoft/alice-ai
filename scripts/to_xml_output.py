@@ -14,6 +14,7 @@ args = parser.parse_args()
 json_folder = args.json
 
 for file in os.listdir(json_folder):
+    #print file
     #defence from the macos system files
     if file.startswith("."):
         continue
@@ -29,13 +30,15 @@ for file in os.listdir(json_folder):
 
         try:
             config = json.loads(codecs.open(json_folder+file, "r", encoding='utf-8', errors='ignore').read())
-
+            os.remove(json_folder+file)
             #isEmpty
             empty = etree.Element("empty")
             empty.text = "False"
             annotation.append(empty)
 
             for dictt in config:
+                if dictt == None:
+                    continue
                 x1 = dictt["topleft"]["x"]
                 y1 = dictt["topleft"]["y"]
                 x2 = dictt["bottomright"]["x"]
